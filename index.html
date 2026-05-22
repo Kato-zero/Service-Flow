@@ -32,6 +32,7 @@
       --warning:#f59e0b;
       --shadow:0 10px 30px rgba(15,23,42,0.06);
       --radius:24px;
+      --card-radius:20px;
     }
 
     body{
@@ -369,7 +370,7 @@
       align-items:center;
       gap:14px;
       flex-wrap:wrap;
-      margin-bottom:22px;
+      margin-bottom:28px;
     }
 
     .search-wrapper{
@@ -418,679 +419,574 @@
       box-shadow:0 8px 18px rgba(109,40,217,0.22);
     }
 
-    /* TABLE */
-
-    .table-container{
-      background:rgba(255,255,255,0.86);
-      backdrop-filter:blur(16px);
-      border-radius:30px;
-      overflow:hidden;
-      border:1px solid rgba(255,255,255,0.5);
-      box-shadow:var(--shadow);
+    /* EXPANDABLE CARD GRID - replacing table */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 20px;
     }
 
-    .appointments-table{
-      width:100%;
-      border-collapse:collapse;
-      font-size:0.9rem;
-      min-width:760px;
+    .appointment-card {
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: var(--shadow);
+      transition: all 0.25s ease;
+      overflow: hidden;
     }
 
-    .appointments-table th{
-      text-align:left;
-      padding:18px 16px;
-      background:#fafafa;
-      font-weight:800;
-      color:#475569;
-      border-bottom:1px solid #e2e8f0;
-      position:sticky;
-      top:0;
+    .appointment-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 20px 35px rgba(15,23,42,0.12);
     }
 
-    .appointments-table td{
-      padding:18px 16px;
-      border-bottom:1px solid #f1f5f9;
-      vertical-align:middle;
+    .card-header {
+      padding: 20px 22px;
+      cursor: pointer;
+      background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(248,245,255,0.5));
+      border-bottom: 1px solid rgba(109,40,217,0.08);
+      transition: background 0.2s;
+    }
+    .card-header:hover {
+      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(237,233,254,0.6));
     }
 
-    .appointments-table tr:hover{
-      background:#faf7ff;
+    .customer-name-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .customer-name {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      letter-spacing: -0.2px;
+    }
+    .expand-icon {
+      font-size: 0.9rem;
+      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      display: inline-block;
+      color: var(--primary);
+    }
+    .expand-icon.rotated {
+      transform: rotate(90deg);
+    }
+    .status-badge-card {
+      display: inline-block;
+      padding: 5px 12px;
+      border-radius: 40px;
+      font-size: 0.7rem;
+      font-weight: 800;
+    }
+    .status-completed-card {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .status-pending-card {
+      background: #fef3c7;
+      color: #92400e;
     }
 
-    tr.completed-row{
-      background:#f0fdf4;
-      opacity:0.92;
+    .card-preview {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .preview-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    .completed-badge{
-      background:#dcfce7;
-      color:#166534;
-      padding:6px 12px;
-      border-radius:999px;
-      font-size:0.72rem;
-      font-weight:800;
-      display:inline-block;
+    /* expanded content */
+    .card-details {
+      padding: 0 22px 22px 22px;
+      background: #fefcff;
+      border-top: 1px solid rgba(139,92,246,0.12);
+      animation: fadeSlideDown 0.25s ease;
+    }
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .details-grid-card {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .detail-card-item {
+      flex: 1;
+      min-width: 150px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 20px;
+      padding: 12px 16px;
+      background: #f9f6fe;
+    }
+    .detail-label-card {
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      margin-bottom: 6px;
+    }
+    .detail-value-card {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text);
+      word-break: break-word;
+    }
+    .amount-value {
+      color: var(--primary);
+      font-size: 1.2rem;
+      font-weight: 800;
+    }
+    .action-buttons-card {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 20px;
+      padding-top: 6px;
+      border-top: 1px solid #e9e4f5;
+    }
+    .card-action-btn {
+      border: none;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 10px 18px;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+    .card-edit {
+      background: #eef2ff;
+      color: #4338ca;
+    }
+    .card-delete {
+      background: #fee2e2;
+      color: #b91c1c;
+    }
+    .card-complete {
+      background: #dcfce7;
+      color: #166534;
+    }
+    .card-action-btn:hover {
+      transform: translateY(-2px);
+      filter: brightness(0.97);
     }
 
-    .amount-cell{
-      font-weight:800;
-      color:var(--primary-dark);
+    .empty-state {
+      text-align: center;
+      padding: 70px 24px;
+      background: rgba(255,255,255,0.7);
+      backdrop-filter: blur(12px);
+      border-radius: 40px;
+      margin-top: 20px;
+    }
+    .empty-state h3 {
+      font-size: 1.5rem;
+      margin-bottom: 12px;
     }
 
-    .btn-icon-group{
-      display:flex;
-      flex-wrap:wrap;
-      gap:6px;
-    }
-
-    .action-btn{
-      border:none;
-      font-size:0.75rem;
-      font-weight:800;
-      padding:10px 14px;
-      border-radius:999px;
-      cursor:pointer;
-      transition:0.2s ease;
-    }
-
-    .btn-edit{
-      background:#eef2ff;
-      color:#4338ca;
-    }
-
-    .btn-delete{
-      background:#fee2e2;
-      color:#b91c1c;
-    }
-
-    .btn-complete{
-      background:#dcfce7;
-      color:#166534;
-    }
-
-    .action-btn:hover{
-      transform:translateY(-1px);
-    }
-
-    /* MOBILE RESPONSIVE */
-
-    @media (max-width:768px){
-
-      body{
-        padding:14px;
+    @media (max-width: 680px) {
+      .cards-grid {
+        grid-template-columns: 1fr;
       }
-
-      .nav-bar{
-        border-radius:24px;
-        padding:12px;
-        align-items:flex-start;
-        flex-direction:column;
+      .customer-name {
+        font-size: 1.2rem;
       }
-
-      .nav-links{
-        width:100%;
+      .card-header {
+        padding: 16px 18px;
       }
-
-      .nav-link{
-        flex:1;
-        text-align:center;
-      }
-
-      .install-btn{
-        width:100%;
-        justify-content:center;
-      }
-
-      .dashboard-header{
-        flex-direction:column;
-        align-items:flex-start;
-      }
-
-      .header-stats{
-        width:100%;
-      }
-
-      .stat-badge{
-        flex:1;
-      }
-
-      .kpi-grid{
-        grid-template-columns:1fr 1fr;
-      }
-
-      .kpi-card{
-        padding:18px;
-      }
-
-      .kpi-value{
-        font-size:1.6rem;
-      }
-
-      .form-card{
-        padding:18px;
-        border-radius:24px;
-      }
-
-      .appointment-form{
-        grid-template-columns:1fr;
-      }
-
-      .btn-primary{
-        margin-top:4px;
-      }
-
-      .action-bar{
-        flex-direction:column;
-        align-items:stretch;
-      }
-
-      .filter-group{
-        width:100%;
-        overflow:auto;
-        padding-bottom:2px;
-        flex-wrap:nowrap;
-      }
-
-      .filter-chip{
-        white-space:nowrap;
-      }
-
-      .table-container{
-        border-radius:24px;
+      .card-details {
+        padding: 0 18px 18px 18px;
       }
     }
-
-    @media (max-width:520px){
-
-      .kpi-grid{
-        grid-template-columns:1fr;
-      }
-
-      .brand h1{
-        font-size:1.9rem;
-      }
-
-      .appointments-table{
-        min-width:700px;
-      }
-    }
-
   </style>
 </head>
-
 <body>
 
 <div class="app-container">
-
   <!-- Navigation -->
   <div class="nav-bar">
-
     <div class="nav-links">
       <a href="index.html" class="nav-link active">Appointments</a>
       <a href="reports.html" class="nav-link">Yearly Reports</a>
     </div>
-
-    <button id="installBtn" class="install-btn">
-      📱 Install App
-    </button>
-
+    <button id="installBtn" class="install-btn">📱 Install App</button>
   </div>
 
   <!-- Dashboard Header -->
   <div class="dashboard-header">
-
     <div class="brand">
-      <h1 id="dynamicTitle">ServiceFlow Dashboard</h1>
+      <h1>ServiceFlow Dashboard</h1>
       <p>Smart appointment tracking · Revenue insights</p>
     </div>
-
     <div class="header-stats">
       <div class="stat-badge">
         <span class="stat-label">Today</span>
         <span class="stat-number" id="todayCount">0</span>
       </div>
-
       <div class="stat-badge">
         <span class="stat-label">Pending</span>
         <span class="stat-number" id="pendingCount">0</span>
       </div>
     </div>
-
   </div>
 
   <!-- KPI Cards -->
   <div class="kpi-grid">
-
     <div class="kpi-card">
       <div class="kpi-title">💰 Total Revenue</div>
       <div class="kpi-value" id="totalCollectedKpi">$0</div>
       <div class="kpi-sub">completed appointments</div>
     </div>
-
     <div class="kpi-card">
       <div class="kpi-title">📌 Active</div>
       <div class="kpi-value" id="activeAppointmentsKpi">0</div>
       <div class="kpi-sub">pending completion</div>
     </div>
-
     <div class="kpi-card">
       <div class="kpi-title">✅ Completed</div>
       <div class="kpi-value" id="completedJobsKpi">0</div>
       <div class="kpi-sub">successful services</div>
     </div>
-
     <div class="kpi-card">
       <div class="kpi-title">📈 This Month</div>
       <div class="kpi-value" id="monthRevenueKpi">$0</div>
       <div class="kpi-sub">revenue trend ↑</div>
     </div>
-
   </div>
 
   <!-- Form Card -->
   <div class="form-card">
-
     <div class="form-title">
       <span id="formModeText">Add New Appointment</span>
       <span id="editModeChip" class="edit-mode-badge" style="display:none;">Editing</span>
     </div>
-
     <form id="appointmentForm" class="appointment-form">
-
       <div class="input-group">
         <label>Customer Name</label>
         <input type="text" id="name" placeholder="Full name" required>
       </div>
-
       <div class="input-group">
         <label>Contact</label>
         <input type="text" id="phone" placeholder="Phone number" required>
       </div>
-
       <div class="input-group">
         <label>Service Offered</label>
-
         <div class="service-input-wrapper">
-          <input
-            type="text"
-            id="serviceType"
-            placeholder="Type the service..."
-            list="serviceSuggestions"
-            autocomplete="off">
+          <input type="text" id="serviceType" placeholder="Type the service..." list="serviceSuggestions" autocomplete="off">
           <datalist id="serviceSuggestions"></datalist>
         </div>
-
         <div class="quick-service-buttons" id="quickServiceButtons"></div>
       </div>
-
       <div class="input-group">
         <label>Date & Time</label>
         <input type="datetime-local" id="datetime" required>
       </div>
-
       <div class="input-group">
         <label>Price ($)</label>
         <input type="number" id="amount" placeholder="0.00" step="0.01" required>
       </div>
-
       <div>
-        <button type="submit" class="btn-primary">
-          Save Appointment
-        </button>
+        <button type="submit" class="btn-primary">Save Appointment</button>
       </div>
-
     </form>
-
   </div>
 
   <!-- Search & Filters -->
   <div class="action-bar">
-
     <div class="search-wrapper">
       <input type="text" id="searchBar" placeholder="🔍 Search by customer, phone, or service...">
     </div>
-
     <div class="filter-group">
       <div class="filter-chip" data-filter="all">All</div>
       <div class="filter-chip" data-filter="pending">Pending</div>
       <div class="filter-chip" data-filter="completed">Completed</div>
     </div>
-
   </div>
 
-  <!-- Table -->
-  <div class="table-container">
-
-    <table class="appointments-table">
-
-      <thead>
-        <tr>
-          <th>Customer</th>
-          <th>Contact</th>
-          <th>Service</th>
-          <th>Date & Time</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-
-      <tbody id="tableBody"></tbody>
-
-    </table>
-
-  </div>
+  <!-- Expandable Cards Grid (replaces table) -->
+  <div id="cardsGridContainer" class="cards-grid"></div>
 
 </div>
 
 <script>
-  // KEEPING YOUR ORIGINAL LOGIC
-
+  // ORIGINAL LOGIC preserved - only UI changed from table to expandable cards
   let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
-  let currentBusiness = localStorage.getItem("business_type") || "salon";
   let editIndex = -1;
   let currentFilter = "all";
   let deferredPrompt;
+  let expandedCardId = null; // track which card is expanded
 
   const form = document.getElementById("appointmentForm");
-  const tbody = document.getElementById("tableBody");
+  const cardsContainer = document.getElementById("cardsGridContainer");
   const searchInput = document.getElementById("searchBar");
 
   function formatDateTime(datetimeStr) {
     if(!datetimeStr) return "—";
     const d = new Date(datetimeStr);
-    return d.toLocaleString(undefined, {
-      month:'short',
-      day:'numeric',
-      hour:'2-digit',
-      minute:'2-digit'
-    });
+    return d.toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+  
+  function formatFullDate(datetimeStr) {
+    if(!datetimeStr) return "Not scheduled";
+    return new Date(datetimeStr).toLocaleString(undefined, { weekday:'short', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
   }
 
   function isToday(datetimeStr) {
     const today = new Date().toISOString().slice(0,10);
     return datetimeStr?.slice(0,10) === today;
   }
-
+  
   function isCurrentMonth(datetimeStr) {
     const today = new Date();
     const appointDate = new Date(datetimeStr);
-
-    return appointDate.getMonth() === today.getMonth() &&
-           appointDate.getFullYear() === today.getFullYear();
+    return appointDate.getMonth() === today.getMonth() && appointDate.getFullYear() === today.getFullYear();
   }
-
+  
   function updateMetrics() {
-
     const completedApps = appointments.filter(a => a.completed === true);
     const pendingApps = appointments.filter(a => !a.completed);
-
-    const totalCollected = completedApps.reduce(
-      (sum,a)=>sum + parseFloat(a.amount || 0),0
-    );
-
-    const thisMonthRevenue = appointments
-      .filter(a => a.completed && isCurrentMonth(a.datetime))
-      .reduce((sum,a)=>sum + parseFloat(a.amount || 0),0);
-
+    const totalCollected = completedApps.reduce((sum,a)=>sum + parseFloat(a.amount || 0),0);
+    const thisMonthRevenue = appointments.filter(a => a.completed && isCurrentMonth(a.datetime)).reduce((sum,a)=>sum + parseFloat(a.amount || 0),0);
     const todayApps = appointments.filter(a => isToday(a.datetime)).length;
-
-    document.getElementById("totalCollectedKpi").innerText =
-      `$${totalCollected.toFixed(2)}`;
-
-    document.getElementById("activeAppointmentsKpi").innerText =
-      pendingApps.length;
-
-    document.getElementById("completedJobsKpi").innerText =
-      completedApps.length;
-
-    document.getElementById("monthRevenueKpi").innerText =
-      `$${thisMonthRevenue.toFixed(2)}`;
-
-    document.getElementById("todayCount").innerText =
-      todayApps;
-
-    document.getElementById("pendingCount").innerText =
-      pendingApps.length;
-  }
-
-  function renderAppointments() {
-
-    let filtered = appointments;
-
-    const searchTerm = searchInput.value.trim().toLowerCase();
-
-    if(searchTerm){
-      filtered = filtered.filter(a =>
-        a.name.toLowerCase().includes(searchTerm) ||
-        a.phone.includes(searchTerm) ||
-        a.service.toLowerCase().includes(searchTerm)
-      );
-    }
-
-    if(currentFilter === "pending"){
-      filtered = filtered.filter(a => !a.completed);
-    }
-
-    if(currentFilter === "completed"){
-      filtered = filtered.filter(a => a.completed);
-    }
-
-    tbody.innerHTML = "";
-
-    if(filtered.length === 0){
-
-      tbody.innerHTML = `
-        <tr>
-          <td colspan="7" style="text-align:center;padding:60px 20px;">
-            <div style="font-size:1rem;font-weight:700;margin-bottom:10px;">
-              ✨ No appointments found
-            </div>
-
-            <div style="color:#64748b;">
-              Add your first appointment above.
-            </div>
-          </td>
-        </tr>
-      `;
-
-    } else {
-
-      filtered.forEach((appt) => {
-
-        const row = document.createElement("tr");
-
-        if(appt.completed){
-          row.classList.add("completed-row");
-        }
-
-        const statusHtml = appt.completed
-          ? `<span class="completed-badge">✓ Completed</span>`
-          : `<span style="background:#fef3c7;padding:6px 12px;border-radius:999px;font-size:0.72rem;font-weight:700;">⏳ Pending</span>`;
-
-        row.innerHTML = `
-          <td style="font-weight:700;">${escapeHtml(appt.name)}</td>
-
-          <td>${escapeHtml(appt.phone)}</td>
-
-          <td>
-            <strong>${escapeHtml(appt.service)}</strong>
-          </td>
-
-          <td>${formatDateTime(appt.datetime)}</td>
-
-          <td class="amount-cell">
-            $${parseFloat(appt.amount).toFixed(2)}
-          </td>
-
-          <td>${statusHtml}</td>
-
-          <td class="btn-icon-group">
-
-            <button class="action-btn btn-edit" data-id="${appt.id}">
-              Edit
-            </button>
-
-            <button class="action-btn btn-delete" data-id="${appt.id}">
-              Delete
-            </button>
-
-            <button class="action-btn btn-complete" data-id="${appt.id}">
-              ${appt.completed ? '↩ Undo' : 'Complete'}
-            </button>
-
-          </td>
-        `;
-
-        tbody.appendChild(row);
-
-      });
-
-    }
-
-    updateMetrics();
-    attachTableEvents();
+    document.getElementById("totalCollectedKpi").innerText = `$${totalCollected.toFixed(2)}`;
+    document.getElementById("activeAppointmentsKpi").innerText = pendingApps.length;
+    document.getElementById("completedJobsKpi").innerText = completedApps.length;
+    document.getElementById("monthRevenueKpi").innerText = `$${thisMonthRevenue.toFixed(2)}`;
+    document.getElementById("todayCount").innerText = todayApps;
+    document.getElementById("pendingCount").innerText = pendingApps.length;
   }
 
   function escapeHtml(str){
     if(!str) return '';
-
-    return str.replace(/[&<>]/g,function(m){
-
+    return str.replace(/[&<>]/g, function(m) {
       if(m==='&') return '&amp;';
       if(m==='<') return '&lt;';
       if(m==='>') return '&gt;';
-
       return m;
     });
   }
 
-  function attachTableEvents(){
+  function toggleExpand(cardId) {
+    if (expandedCardId === cardId) {
+      expandedCardId = null;
+    } else {
+      expandedCardId = cardId;
+    }
+    renderCards();
+  }
 
-    document.querySelectorAll('.btn-edit')
-      .forEach(btn =>
-        btn.addEventListener('click',
-          () => handleEdit(btn.dataset.id)
-        )
+  function renderCards() {
+    let filtered = appointments;
+    const searchTerm = searchInput.value.trim().toLowerCase();
+    if(searchTerm){
+      filtered = filtered.filter(a => 
+        a.name.toLowerCase().includes(searchTerm) || 
+        a.phone.includes(searchTerm) || 
+        a.service.toLowerCase().includes(searchTerm)
       );
-
-    document.querySelectorAll('.btn-delete')
-      .forEach(btn =>
-        btn.addEventListener('click',
-          () => handleDelete(btn.dataset.id)
-        )
-      );
-
-    document.querySelectorAll('.btn-complete')
-      .forEach(btn =>
-        btn.addEventListener('click',
-          () => handleToggle(btn.dataset.id)
-        )
-      );
+    }
+    if(currentFilter === "pending") filtered = filtered.filter(a => !a.completed);
+    if(currentFilter === "completed") filtered = filtered.filter(a => a.completed);
+    
+    cardsContainer.innerHTML = "";
+    
+    if(filtered.length === 0){
+      cardsContainer.innerHTML = `<div class="empty-state"><h3>✨ No appointments found</h3><p style="color:var(--muted)">Add your first appointment above.</p></div>`;
+      updateMetrics();
+      return;
+    }
+    
+    filtered.forEach(appt => {
+      const isExpanded = (expandedCardId === appt.id);
+      const statusClass = appt.completed ? 'status-completed-card' : 'status-pending-card';
+      const statusText = appt.completed ? '✓ Completed' : '⏳ Pending';
+      const amountValue = parseFloat(appt.amount).toFixed(2);
+      
+      // Build card
+      const card = document.createElement('div');
+      card.className = 'appointment-card';
+      if(appt.completed) card.style.background = 'rgba(240,253,244,0.88)';
+      
+      // Header (clickable area)
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'card-header';
+      headerDiv.setAttribute('data-id', appt.id);
+      
+      headerDiv.innerHTML = `
+        <div class="customer-name-row">
+          <div class="customer-name">
+            <span class="expand-icon">▶</span>
+            ${escapeHtml(appt.name)}
+          </div>
+          <div class="status-badge-card ${statusClass}">${statusText}</div>
+        </div>
+        <div class="card-preview">
+          <div class="preview-item">📞 ${escapeHtml(appt.phone)}</div>
+          <div class="preview-item">🛠 ${escapeHtml(appt.service)}</div>
+          <div class="preview-item">💰 $${amountValue}</div>
+        </div>
+      `;
+      
+      card.appendChild(headerDiv);
+      
+      // Expanded details section
+      if(isExpanded){
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'card-details';
+        const fullDateFormatted = formatFullDate(appt.datetime);
+        detailsDiv.innerHTML = `
+          <div class="details-grid-card">
+            <div class="detail-card-item">
+              <div class="detail-label-card">📞 CONTACT</div>
+              <div class="detail-value-card">${escapeHtml(appt.phone)}</div>
+            </div>
+            <div class="detail-card-item">
+              <div class="detail-label-card">🛠 SERVICE</div>
+              <div class="detail-value-card"><strong>${escapeHtml(appt.service)}</strong></div>
+            </div>
+            <div class="detail-card-item">
+              <div class="detail-label-card">📅 DATE & TIME</div>
+              <div class="detail-value-card">${fullDateFormatted}</div>
+            </div>
+            <div class="detail-card-item">
+              <div class="detail-label-card">💰 AMOUNT</div>
+              <div class="detail-value-card amount-value">$${amountValue}</div>
+            </div>
+            <div class="detail-card-item">
+              <div class="detail-label-card">📌 STATUS</div>
+              <div class="detail-value-card"><span class="status-badge-card ${statusClass}">${statusText}</span></div>
+            </div>
+            ${appt.createdAt ? `<div class="detail-card-item"><div class="detail-label-card">📅 CREATED</div><div class="detail-value-card">${new Date(appt.createdAt).toLocaleDateString()}</div></div>` : ''}
+          </div>
+          <div class="action-buttons-card">
+            <button class="card-action-btn card-edit" data-id="${appt.id}">✏️ Edit</button>
+            <button class="card-action-btn card-delete" data-id="${appt.id}">🗑️ Delete</button>
+            <button class="card-action-btn card-complete" data-id="${appt.id}">${appt.completed ? '↩ Undo' : '✓ Complete'}</button>
+          </div>
+        `;
+        card.appendChild(detailsDiv);
+      }
+      
+      cardsContainer.appendChild(card);
+    });
+    
+    // Attach click listeners for expand/collapse (only on header)
+    document.querySelectorAll('.card-header').forEach(header => {
+      header.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idAttr = header.getAttribute('data-id');
+        if(idAttr) {
+          const idNum = parseInt(idAttr);
+          if(!isNaN(idNum)) toggleExpand(idNum);
+        }
+      });
+    });
+    
+    // Attach action buttons for edit/delete/complete
+    document.querySelectorAll('.card-edit').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleEdit(btn.getAttribute('data-id'));
+      });
+    });
+    document.querySelectorAll('.card-delete').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleDelete(btn.getAttribute('data-id'));
+      });
+    });
+    document.querySelectorAll('.card-complete').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleToggle(btn.getAttribute('data-id'));
+      });
+    });
+    
+    // Rotate arrow for expanded card
+    document.querySelectorAll('.appointment-card').forEach(card => {
+      const iconSpan = card.querySelector('.expand-icon');
+      const header = card.querySelector('.card-header');
+      if(header && iconSpan) {
+        const idAttr = header.getAttribute('data-id');
+        if(idAttr && parseInt(idAttr) === expandedCardId) {
+          iconSpan.classList.add('rotated');
+        } else {
+          iconSpan.classList.remove('rotated');
+        }
+      }
+    });
+    
+    updateMetrics();
   }
 
   function handleEdit(id){
-
     const appt = appointments.find(a => a.id == id);
-
     if(!appt) return;
-
     document.getElementById("name").value = appt.name;
     document.getElementById("phone").value = appt.phone;
     document.getElementById("serviceType").value = appt.service;
     document.getElementById("datetime").value = appt.datetime;
     document.getElementById("amount").value = appt.amount;
-
     editIndex = appointments.findIndex(a => a.id == id);
-
-    document.getElementById("formModeText").innerText =
-      "✏️ Edit Appointment";
-
-    document.getElementById("editModeChip").style.display =
-      "inline-block";
-
-    window.scrollTo({
-      top:0,
-      behavior:'smooth'
-    });
+    document.getElementById("formModeText").innerText = "✏️ Edit Appointment";
+    document.getElementById("editModeChip").style.display = "inline-block";
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   function handleDelete(id){
-
     if(confirm("Delete this appointment?")){
-
       appointments = appointments.filter(a => a.id != id);
-
-      localStorage.setItem(
-        "serviceflow_appointments",
-        JSON.stringify(appointments)
-      );
-
-      renderAppointments();
+      if(expandedCardId === id) expandedCardId = null;
+      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+      renderCards();
     }
   }
 
   function handleToggle(id){
-
     const index = appointments.findIndex(a => a.id == id);
-
-    appointments[index].completed =
-      !appointments[index].completed;
-
-    localStorage.setItem(
-      "serviceflow_appointments",
-      JSON.stringify(appointments)
-    );
-
-    renderAppointments();
+    if(index !== -1){
+      appointments[index].completed = !appointments[index].completed;
+      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+      renderCards();
+    }
   }
 
   function resetFormMode(){
-
     editIndex = -1;
-
-    document.getElementById("formModeText").innerText =
-      "Add New Appointment";
-
-    document.getElementById("editModeChip").style.display =
-      "none";
-
+    document.getElementById("formModeText").innerText = "Add New Appointment";
+    document.getElementById("editModeChip").style.display = "none";
     form.reset();
-
     const defaultDateTime = new Date();
-
     defaultDateTime.setHours(defaultDateTime.getHours() + 1);
-
-    document.getElementById("datetime").value =
-      defaultDateTime.toISOString().slice(0,16);
+    document.getElementById("datetime").value = defaultDateTime.toISOString().slice(0,16);
   }
 
-  form.addEventListener("submit",(e)=>{
-
+  form.addEventListener("submit", (e) => {
     e.preventDefault();
-
-    const name =
-      document.getElementById("name").value.trim();
-
-    const phone =
-      document.getElementById("phone").value.trim();
-
-    const service =
-      document.getElementById("serviceType").value.trim();
-
-    const datetime =
-      document.getElementById("datetime").value;
-
-    const amount =
-      parseFloat(document.getElementById("amount").value);
-
+    const name = document.getElementById("name").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const service = document.getElementById("serviceType").value.trim();
+    const datetime = document.getElementById("datetime").value;
+    const amount = parseFloat(document.getElementById("amount").value);
     if(!name || !phone || !service || !datetime || isNaN(amount) || amount <= 0){
-
       alert("Please fill all fields correctly.");
-
       return;
     }
-
     const appointment = {
       id: Date.now(),
       name,
@@ -1098,109 +994,62 @@
       service,
       datetime,
       amount,
-      completed:false,
-      createdAt:new Date().toISOString()
+      completed: false,
+      createdAt: new Date().toISOString()
     };
-
     if(editIndex === -1){
-
       appointments.push(appointment);
-
     } else {
-
-      appointment.completed =
-        appointments[editIndex].completed;
-
-      appointment.createdAt =
-        appointments[editIndex].createdAt;
-
+      appointment.completed = appointments[editIndex].completed;
+      appointment.createdAt = appointments[editIndex].createdAt;
       appointments[editIndex] = appointment;
-
       editIndex = -1;
-
       resetFormMode();
     }
-
-    localStorage.setItem(
-      "serviceflow_appointments",
-      JSON.stringify(appointments)
-    );
-
-    renderAppointments();
-
+    localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+    renderCards();
     form.reset();
-
     resetFormMode();
-
-    const submitBtn =
-      form.querySelector('button[type="submit"]');
-
+    const submitBtn = form.querySelector('button[type="submit"]');
     const originalText = submitBtn.textContent;
-
     submitBtn.textContent = '✓ Saved!';
-
-    setTimeout(()=>{
-      submitBtn.textContent = originalText;
-    },1500);
-
+    setTimeout(() => { submitBtn.textContent = originalText; }, 1500);
   });
 
-  document.querySelectorAll(".filter-chip")
-    .forEach(chip => {
-
-      chip.addEventListener("click",()=>{
-
-        document.querySelectorAll(".filter-chip")
-          .forEach(c => c.classList.remove("active"));
-
-        chip.classList.add("active");
-
-        currentFilter = chip.dataset.filter;
-
-        renderAppointments();
-
-      });
-
+  // Filter chips
+  document.querySelectorAll(".filter-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
+      chip.classList.add("active");
+      currentFilter = chip.dataset.filter;
+      expandedCardId = null;
+      renderCards();
     });
-
-  searchInput.addEventListener("input",()=>{
-    renderAppointments();
   });
-
-  window.addEventListener('beforeinstallprompt',(e)=>{
-
+  
+  searchInput.addEventListener("input", () => {
+    expandedCardId = null;
+    renderCards();
+  });
+  
+  // PWA install
+  window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-
     deferredPrompt = e;
-
-    document.getElementById('installBtn')
-      .classList.add('show');
+    document.getElementById('installBtn').classList.add('show');
   });
-
-  document.getElementById('installBtn')
-    .addEventListener('click', async () => {
-
-      if(deferredPrompt){
-
-        deferredPrompt.prompt();
-
-        await deferredPrompt.userChoice;
-
-        deferredPrompt = null;
-
-        document.getElementById('installBtn')
-          .classList.remove('show');
-      }
-    });
-
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if(deferredPrompt){
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('installBtn').classList.remove('show');
+    }
+  });
+  
   resetFormMode();
-
-  document.querySelector(".filter-chip[data-filter='all']")
-    .classList.add("active");
-
-  renderAppointments();
-
+  document.querySelector(".filter-chip[data-filter='all']").classList.add("active");
+  renderCards();
 </script>
-
 </body>
 </html>
