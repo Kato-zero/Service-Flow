@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>ServiceFlow | Add / Edit Appointment</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#6d28d9">
+  <meta name="description" content="Add or edit appointment details">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    :root{
+      --bg:#f5f7ff;
+      --card:#ffffff;
+      --primary:#6d28d9;
+      --primary-dark:#5b21b6;
+      --secondary:#8b5cf6;
+      --text:#0f172a;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --success:#16a34a;
+      --danger:#dc2626;
+      --warning:#f59e0b;
+      --shadow:0 10px 30px rgba(15,23,42,0.06);
+      --radius:24px;
+    }
+
+    body{
+      font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;
+      background:
+        radial-gradient(circle at top right,#ede9fe 0%,transparent 30%),
+        radial-gradient(circle at bottom left,#dbeafe 0%,transparent 35%),
+        var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      padding:18px;
+    }
+
+    .app-container{
+      max-width:800px;
+      margin:0 auto;
+    }
+
+    /* Icon styles */
+    .icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      vertical-align: middle;
+    }
+    .icon-white {
+      filter: brightness(0) invert(1);
+    }
+
+    /* NAVIGATION */
+    .nav-bar{
+      background:rgba(255,255,255,0.8);
+      backdrop-filter:blur(16px);
+      border:1px solid rgba(255,255,255,0.4);
+      border-radius:999px;
+      padding:10px 14px;
+      margin-bottom:22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      box-shadow:var(--shadow);
+      position:sticky;
+      top:12px;
+      z-index:100;
+    }
+
+    .nav-links{
+      display:flex;
+      gap:10px;
+      overflow:auto;
+      scrollbar-width:none;
+    }
+
+    .nav-links::-webkit-scrollbar{
+      display:none;
+    }
+
+    .nav-link{
+      padding:12px 18px;
+      border-radius:999px;
+      text-decoration:none;
+      font-weight:600;
+      transition:0.25s ease;
+      background:#f8fafc;
+      color:#334155;
+      white-space:nowrap;
+      font-size:0.92rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-link.active{
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:white;
+      box-shadow:0 8px 20px rgba(109,40,217,0.28);
+    }
+
+    .nav-link.active .icon {
+      filter: brightness(0) invert(1);
+    }
+
+    .nav-link:hover:not(.active){
+      background:#eef2ff;
+      color:var(--primary);
+    }
+
+    /* INSTALL BUTTON */
+    .install-btn{
+      background:linear-gradient(135deg,var(--primary),var(--secondary));
+      color:white;
+      border:none;
+      padding:12px 18px;
+      border-radius:999px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:0.9rem;
+      display:none;
+      box-shadow:0 8px 18px rgba(109,40,217,0.25);
+      transition:0.25s ease;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .install-btn.show{
+      display:inline-flex;
+    }
+
+    .install-btn:hover{
+      transform:translateY(-1px);
+    }
+
+    /* HEADER */
+    .page-header{
+      margin-bottom: 28px;
+    }
+
+    .page-header h1{
+      font-size: clamp(1.8rem, 4vw, 2.4rem);
+      font-weight: 800;
+      background: linear-gradient(135deg, #111827, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .page-header p{
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* FORM CARD */
+    .form-card{
+      background: rgba(255,255,255,0.92);
+      backdrop-filter: blur(18px);
+      border-radius: 32px;
+      padding: 32px;
+      border: 1px solid rgba(255,255,255,0.6);
+      box-shadow: var(--shadow);
+      margin-bottom: 24px;
+    }
+
+    .form-title{
+      font-weight: 800;
+      font-size: 1.3rem;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      padding-bottom: 16px;
+      border-bottom: 2px solid rgba(109,40,217,0.15);
+    }
+
+    .edit-mode-badge{
+      background: #fef3c7;
+      color: #92400e;
+      font-size: 0.72rem;
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .appointment-form{
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+
+    .input-group{
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .input-group label{
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .input-group input,
+    .input-group select{
+      width: 100%;
+      padding: 16px 18px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      font-size: 1rem;
+      transition: 0.25s ease;
+      font-family: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+
+    .input-group input:focus,
+    .input-group select:focus{
+      outline: none;
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 5px rgba(139,92,246,0.15);
+    }
+
+    .quick-service-buttons{
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .quick-service-btn{
+      background: #f3f4f6;
+      border: 1px solid #e5e7eb;
+      padding: 8px 16px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: 0.2s ease;
+      font-weight: 600;
+    }
+
+    .quick-service-btn:hover{
+      background: #ede9fe;
+      color: var(--primary);
+      border-color: #ddd6fe;
+    }
+
+    .form-actions{
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary{
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 16px 28px;
+      border-radius: 24px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-size: 1rem;
+      box-shadow: 0 10px 24px rgba(109,40,217,0.25);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .btn-primary:hover{
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary{
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid var(--border);
+      padding: 16px 28px;
+      border-radius: 24px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.25s ease;
+      font-size: 1rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      justify-content: center;
+    }
+
+    .btn-secondary:hover{
+      background: #e2e8f0;
+      transform: translateY(-1px);
+    }
+
+    .message-toast{
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: white;
+      padding: 14px 24px;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .message-toast.show{
+      opacity: 1;
+    }
+
+    @media (max-width: 640px){
+      body{
+        padding: 14px;
+      }
+      .form-card{
+        padding: 22px;
+      }
+      .form-actions{
+        flex-direction: column;
+      }
+      .btn-primary, .btn-secondary{
+        width: 100%;
+      }
+      .message-toast{
+        white-space: normal;
+        text-align: center;
+        max-width: 90%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="app-container">
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+        Appointments
+      </a>
+      <a href="reports.html" class="nav-link">
+        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+        Yearly Reports
+      </a>
+      <a href="add-appointment.html" class="nav-link active">
+        <svg class="icon icon-white" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+        Add New
+      </a>
+    </div>
+    <button id="installBtn" class="install-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Install App
+    </button>
+  </div>
+
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+      <span id="pageTitle">Add New Appointment</span>
+    </h1>
+    <p>Fill in the details below to schedule a new service appointment</p>
+  </div>
+
+  <!-- Form Card -->
+  <div class="form-card">
+    <div class="form-title">
+      <span id="formModeText">Appointment Information</span>
+      <span id="editModeChip" class="edit-mode-badge" style="display: none;">✏️ Editing Mode</span>
+    </div>
+
+    <form id="appointmentForm" class="appointment-form">
+      <div class="input-group">
+        <label>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Customer Name *
+        </label>
+        <input type="text" id="name" placeholder="Enter full name" required autocomplete="off">
+      </div>
+
+      <div class="input-group">
+        <label>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+          Contact Number *
+        </label>
+        <input type="text" id="phone" placeholder="Phone number" required autocomplete="off">
+      </div>
+
+      <div class="input-group">
+        <label>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          Service Offered *
+        </label>
+        <div class="service-input-wrapper">
+          <input type="text" id="serviceType" placeholder="Type the service..." list="serviceSuggestions" autocomplete="off">
+          <datalist id="serviceSuggestions">
+            <option value="Haircut & Styling">
+            <option value="Manicure & Pedicure">
+            <option value="Massage Therapy">
+            <option value="Facial Treatment">
+            <option value="Waxing">
+            <option value="Makeup Application">
+            <option value="Hair Coloring">
+            <option value="Nail Art">
+            <option value="Spa Package">
+            <option value="Consultation">
+          </datalist>
+        </div>
+        <div class="quick-service-buttons" id="quickServiceButtons"></div>
+      </div>
+
+      <div class="input-group">
+        <label>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          Date & Time *
+        </label>
+        <input type="datetime-local" id="datetime" required>
+      </div>
+
+      <div class="input-group">
+        <label>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
+          Price (ZMW) *
+        </label>
+        <input type="number" id="amount" placeholder="0.00" step="0.01" required>
+      </div>
+
+      <div class="form-actions">
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+          <span id="submitBtnText">Save Appointment</span>
+        </button>
+        <button type="button" class="btn-secondary" id="cancelBtn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+          Cancel
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div id="toastMessage" class="message-toast"></div>
+
+<script>
+  // Add/Edit page logic
+  let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
+  let editId = null; // null means add mode, otherwise editing existing appointment
+  let deferredPrompt;
+
+  const form = document.getElementById("appointmentForm");
+  const nameInput = document.getElementById("name");
+  const phoneInput = document.getElementById("phone");
+  const serviceInput = document.getElementById("serviceType");
+  const datetimeInput = document.getElementById("datetime");
+  const amountInput = document.getElementById("amount");
+  const submitBtnText = document.getElementById("submitBtnText");
+  const pageTitleSpan = document.getElementById("pageTitle");
+  const editModeChip = document.getElementById("editModeChip");
+
+  // Quick service buttons
+  const quickServices = ["Haircut & Styling", "Manicure & Pedicure", "Massage Therapy", "Facial Treatment", "Waxing"];
+  const quickContainer = document.getElementById("quickServiceButtons");
+
+  quickServices.forEach(service => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "quick-service-btn";
+    btn.textContent = service;
+    btn.addEventListener("click", () => {
+      serviceInput.value = service;
+    });
+    quickContainer.appendChild(btn);
+  });
+
+  function showToast(message, isError = false) {
+    const toast = document.getElementById("toastMessage");
+    toast.textContent = message;
+    toast.style.background = isError ? "#dc2626" : "#1f2937";
+    toast.classList.add("show");
+    setTimeout(() => {
+      toast.classList.remove("show");
+      toast.style.background = "#1f2937";
+    }, 2500);
+  }
+
+  // Set default datetime to next hour
+  function setDefaultDateTime() {
+    const defaultDateTime = new Date();
+    defaultDateTime.setHours(defaultDateTime.getHours() + 1);
+    defaultDateTime.setMinutes(0, 0, 0);
+    datetimeInput.value = defaultDateTime.toISOString().slice(0, 16);
+  }
+
+  // Load appointment data for editing
+  function loadEditData() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const editParam = urlParams.get('edit');
+    
+    if (editParam) {
+      editId = parseInt(editParam);
+      const appointment = appointments.find(a => a.id === editId);
+      
+      if (appointment) {
+        nameInput.value = appointment.name;
+        phoneInput.value = appointment.phone;
+        serviceInput.value = appointment.service;
+        datetimeInput.value = appointment.datetime;
+        amountInput.value = appointment.amount;
+        
+        pageTitleSpan.textContent = "Edit Appointment";
+        submitBtnText.textContent = "Update Appointment";
+        editModeChip.style.display = "inline-block";
+        document.getElementById("formModeText").innerHTML = "✏️ Edit Existing Appointment";
+        return;
+      }
+    }
+    
+    // Not editing - add mode
+    editId = null;
+    pageTitleSpan.textContent = "Add New Appointment";
+    submitBtnText.textContent = "Save Appointment";
+    editModeChip.style.display = "none";
+    document.getElementById("formModeText").innerHTML = "📝 New Appointment Details";
+    setDefaultDateTime();
+  }
+
+  // Save or update appointment
+  function saveAppointment(event) {
+    event.preventDefault();
+    
+    const name = nameInput.value.trim();
+    const phone = phoneInput.value.trim();
+    const service = serviceInput.value.trim();
+    const datetime = datetimeInput.value;
+    const amount = parseFloat(amountInput.value);
+    
+    if (!name || !phone || !service || !datetime || isNaN(amount) || amount <= 0) {
+      showToast("Please fill all fields correctly with valid amount", true);
+      return;
+    }
+    
+    if (editId !== null) {
+      // Update existing appointment
+      const index = appointments.findIndex(a => a.id === editId);
+      if (index !== -1) {
+        appointments[index] = {
+          ...appointments[index],
+          name: name,
+          phone: phone,
+          service: service,
+          datetime: datetime,
+          amount: amount
+        };
+        localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+        showToast("Appointment updated successfully!");
+        
+        // Dispatch storage event for other tabs/pages
+        window.dispatchEvent(new StorageEvent('storage', {
+          key: 'serviceflow_appointments',
+          newValue: JSON.stringify(appointments)
+        }));
+        
+        // Redirect back to main page after short delay
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 800);
+      } else {
+        showToast("Error: Appointment not found", true);
+      }
+    } else {
+      // Add new appointment
+      const newAppointment = {
+        id: Date.now(),
+        name: name,
+        phone: phone,
+        service: service,
+        datetime: datetime,
+        amount: amount,
+        completed: false,
+        createdAt: new Date().toISOString()
+      };
+      
+      appointments.push(newAppointment);
+      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+      
+      // Dispatch storage event
+      window.dispatchEvent(new StorageEvent('storage', {
+        key: 'serviceflow_appointments',
+        newValue: JSON.stringify(appointments)
+      }));
+      
+      showToast("Appointment saved successfully!");
+      
+      // Reset form for next entry
+      form.reset();
+      setDefaultDateTime();
+      nameInput.focus();
+      
+      // Visual feedback on button
+      const originalText = submitBtnText.textContent;
+      submitBtnText.textContent = "✓ Saved!";
+      setTimeout(() => {
+        if (editId === null) {
+          submitBtnText.textContent = originalText;
+        }
+      }, 1500);
+    }
+  }
+
+  // Cancel and go back
+  function cancelForm() {
+    if (editId !== null) {
+      if (confirm("Cancel editing? Changes will not be saved.")) {
+        window.location.href = "index.html";
+      }
+    } else {
+      if (nameInput.value.trim() || phoneInput.value.trim() || serviceInput.value.trim() || amountInput.value) {
+        if (confirm("Cancel adding appointment? All entered data will be lost.")) {
+          window.location.href = "index.html";
+        }
+      } else {
+        window.location.href = "index.html";
+      }
+    }
+  }
+
+  // Event listeners
+  form.addEventListener("submit", saveAppointment);
+  document.getElementById("cancelBtn").addEventListener("click", cancelForm);
+  
+  // Load data on page load
+  loadEditData();
+  
+  // Refresh appointments from storage (in case of updates from another tab)
+  window.addEventListener('storage', (e) => {
+    if (e.key === 'serviceflow_appointments') {
+      appointments = JSON.parse(e.newValue) || [];
+      // If we're editing and the appointment was deleted elsewhere, redirect
+      if (editId !== null && !appointments.find(a => a.id === editId)) {
+        showToast("This appointment was deleted in another window", true);
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+      }
+    }
+  });
+  
+  // PWA Install
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBtn').classList.add('show');
+  });
+  
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('installBtn').classList.remove('show');
+    }
+  });
+  
+  // Set focus to name field on load
+  setTimeout(() => {
+    if (!editId) nameInput.focus();
+  }, 100);
+</script>
+</body>
+</html>
