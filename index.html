@@ -3,995 +3,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ServiceFlow | Business Appointment Manager</title>
-
+  <title>ServiceFlow | Appointments Dashboard</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6d28d9">
-  <meta name="description" content="Complete appointment management for service businesses">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-
   <style>
-    *{
-      margin:0;
-      padding:0;
-      box-sizing:border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    :root{
-      --bg:#f5f7ff;
-      --card:#ffffff;
-      --primary:#6d28d9;
-      --primary-dark:#5b21b6;
-      --secondary:#8b5cf6;
-      --text:#0f172a;
-      --muted:#64748b;
-      --border:#e2e8f0;
-      --success:#16a34a;
-      --danger:#dc2626;
-      --warning:#f59e0b;
-      --shadow:0 10px 30px rgba(15,23,42,0.06);
-      --radius:24px;
-    }
-
-    body{
-      font-family:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Helvetica,sans-serif;
-      background:
-        radial-gradient(circle at top right,#ede9fe 0%,transparent 30%),
-        radial-gradient(circle at bottom left,#dbeafe 0%,transparent 35%),
-        var(--bg);
-      color:var(--text);
-      min-height:100vh;
-      padding:18px;
-    }
-
-    .app-container{
-      max-width:1440px;
-      margin:0 auto;
-    }
-
-    /* Icon styles */
-    .icon {
-      width: 18px;
-      height: 18px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      vertical-align: middle;
-      margin-right: 4px;
-    }
-    .icon-white {
-      filter: brightness(0) invert(1);
-    }
-
-    /* NAVIGATION */
-    .nav-bar{
-      background:rgba(255,255,255,0.8);
-      backdrop-filter:blur(16px);
-      border:1px solid rgba(255,255,255,0.4);
-      border-radius:999px;
-      padding:10px 14px;
-      margin-bottom:22px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:14px;
-      box-shadow:var(--shadow);
-      position:sticky;
-      top:12px;
-      z-index:100;
-    }
-
-    .nav-links{
-      display:flex;
-      gap:10px;
-      overflow:auto;
-      scrollbar-width:none;
-    }
-
-    .nav-links::-webkit-scrollbar{
-      display:none;
-    }
-
-    .nav-link{
-      padding:12px 18px;
-      border-radius:999px;
-      text-decoration:none;
-      font-weight:600;
-      transition:0.25s ease;
-      background:#f8fafc;
-      color:#334155;
-      white-space:nowrap;
-      font-size:0.92rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .nav-link.active{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:white;
-      box-shadow:0 8px 20px rgba(109,40,217,0.28);
-    }
-
-    .nav-link.active .icon {
-      filter: brightness(0) invert(1);
-    }
-
-    .nav-link:hover:not(.active){
-      background:#eef2ff;
-      color:var(--primary);
-    }
-
-    /* INSTALL BUTTON */
-    .install-btn{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:white;
-      border:none;
-      padding:12px 18px;
-      border-radius:999px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:0.9rem;
-      display:none;
-      box-shadow:0 8px 18px rgba(109,40,217,0.25);
-      transition:0.25s ease;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .install-btn.show{
-      display:inline-flex;
-    }
-
-    .install-btn:hover{
-      transform:translateY(-1px);
-    }
-
-    /* HEADER */
-    .dashboard-header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:18px;
-      margin-bottom:24px;
-      flex-wrap:wrap;
-    }
-
-    .brand h1{
-      font-size:clamp(1.8rem,4vw,2.6rem);
-      font-weight:900;
-      line-height:1.1;
-      background:linear-gradient(135deg,#111827,#7c3aed);
-      -webkit-background-clip:text;
-      -webkit-text-fill-color:transparent;
-    }
-
-    .brand p{
-      color:var(--muted);
-      margin-top:8px;
-      font-size:0.95rem;
-    }
-
-    .header-stats{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-    }
-
-    .stat-badge{
-      background:rgba(255,255,255,0.8);
-      backdrop-filter:blur(14px);
-      border:1px solid rgba(255,255,255,0.6);
-      padding:14px 18px;
-      border-radius:22px;
-      min-width:120px;
-      box-shadow:var(--shadow);
-    }
-
-    .stat-label{
-      display:block;
-      font-size:0.72rem;
-      text-transform:uppercase;
-      color:var(--muted);
-      font-weight:700;
-      letter-spacing:0.08em;
-      margin-bottom:4px;
-    }
-
-    .stat-number{
-      font-size:1.6rem;
-      font-weight:900;
-      color:var(--text);
-    }
-
-    /* KPI */
-    .kpi-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:18px;
-      margin-bottom:28px;
-    }
-
-    .kpi-card{
-      background:rgba(255,255,255,0.82);
-      backdrop-filter:blur(14px);
-      border-radius:var(--radius);
-      padding:22px;
-      border:1px solid rgba(255,255,255,0.5);
-      box-shadow:var(--shadow);
-      position:relative;
-      overflow:hidden;
-      transition:0.25s ease;
-    }
-
-    .kpi-card::before{
-      content:"";
-      position:absolute;
-      top:-50px;
-      right:-50px;
-      width:120px;
-      height:120px;
-      background:rgba(139,92,246,0.08);
-      border-radius:50%;
-    }
-
-    .kpi-card:hover{
-      transform:translateY(-4px);
-    }
-
-    .kpi-title{
-      font-size:0.78rem;
-      font-weight:800;
-      letter-spacing:0.08em;
-      text-transform:uppercase;
-      color:var(--muted);
-      margin-bottom:12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .kpi-value{
-      font-size:2.2rem;
-      font-weight:900;
-      line-height:1.1;
-      color:var(--text);
-    }
-
-    .kpi-sub{
-      font-size:0.82rem;
-      margin-top:10px;
-      color:var(--success);
-      font-weight:600;
-    }
-
-    /* ACTION BAR */
-    .action-bar{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-bottom:28px;
-    }
-
-    .search-wrapper{
-      flex:1;
-      min-width:240px;
-    }
-
-    .search-wrapper input{
-      width:100%;
-      padding:16px 18px;
-      border-radius:999px;
-      border:1px solid var(--border);
-      font-size:0.92rem;
-      background:white;
-      box-shadow:var(--shadow);
-    }
-
-    .search-wrapper input:focus{
-      outline:none;
-      border-color:var(--secondary);
-      box-shadow:0 0 0 5px rgba(139,92,246,0.12);
-    }
-
-    .filter-group{
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-
-    .filter-chip{
-      background:white;
-      border:1px solid var(--border);
-      padding:10px 18px;
-      border-radius:999px;
-      font-size:0.82rem;
-      font-weight:700;
-      cursor:pointer;
-      transition:0.25s ease;
-      box-shadow:0 4px 12px rgba(0,0,0,0.03);
-    }
-
-    .filter-chip.active{
-      background:linear-gradient(135deg,var(--primary),var(--secondary));
-      color:white;
-      border-color:transparent;
-      box-shadow:0 8px 18px rgba(109,40,217,0.22);
-    }
-
-    /* EXPANDABLE CARD GRID */
-    .cards-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-      gap: 20px;
-    }
-
-    .appointment-card {
-      background: rgba(255,255,255,0.92);
-      backdrop-filter: blur(8px);
-      border-radius: 28px;
-      border: 1px solid rgba(255,255,255,0.6);
-      box-shadow: var(--shadow);
-      transition: all 0.25s ease;
-      overflow: hidden;
-    }
-
-    .appointment-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 20px 35px rgba(15,23,42,0.12);
-    }
-
-    .card-header {
-      padding: 20px 22px;
-      cursor: pointer;
-      background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(248,245,255,0.5));
-      border-bottom: 1px solid rgba(109,40,217,0.08);
-      transition: background 0.2s;
-    }
-    .card-header:hover {
-      background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(237,233,254,0.6));
-    }
-
-    .customer-name-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .customer-name {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: var(--primary-dark);
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      letter-spacing: -0.2px;
-    }
-    .expand-icon {
-      font-size: 0.9rem;
-      transition: transform 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-      display: inline-block;
-      color: var(--primary);
-    }
-    .expand-icon.rotated {
-      transform: rotate(90deg);
-    }
-    .status-badge-card {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 5px 12px;
-      border-radius: 40px;
-      font-size: 0.7rem;
-      font-weight: 800;
-    }
-    .status-completed-card {
-      background: #dcfce7;
-      color: #166534;
-    }
-    .status-pending-card {
-      background: #fef3c7;
-      color: #92400e;
-    }
-
-    .card-preview {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 16px;
-      margin-top: 8px;
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-    .preview-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* expanded content */
-    .card-details {
-      padding: 0 22px 22px 22px;
-      background: #fefcff;
-      border-top: 1px solid rgba(139,92,246,0.12);
-      animation: fadeSlideDown 0.25s ease;
-    }
-    @keyframes fadeSlideDown {
-      from { opacity: 0; transform: translateY(-8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    .details-grid-card {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 18px;
-      margin-top: 18px;
-    }
-    .detail-card-item {
-      flex: 1;
-      min-width: 150px;
-      background: rgba(255,255,255,0.7);
-      border-radius: 20px;
-      padding: 12px 16px;
-      background: #f9f6fe;
-    }
-    .detail-label-card {
-      font-size: 0.68rem;
-      font-weight: 800;
-      text-transform: uppercase;
-      color: var(--muted);
-      letter-spacing: 0.06em;
-      margin-bottom: 6px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .detail-value-card {
-      font-weight: 700;
-      font-size: 0.95rem;
-      color: var(--text);
-      word-break: break-word;
-    }
-    .amount-value {
-      color: var(--primary);
-      font-size: 1.2rem;
-      font-weight: 800;
-    }
-    .action-buttons-card {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin-top: 20px;
-      padding-top: 6px;
-      border-top: 1px solid #e9e4f5;
-    }
-    .card-action-btn {
-      border: none;
-      font-size: 0.75rem;
-      font-weight: 800;
-      padding: 10px 18px;
-      border-radius: 40px;
-      cursor: pointer;
-      transition: 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .card-edit {
-      background: #eef2ff;
-      color: #4338ca;
-    }
-    .card-delete {
-      background: #fee2e2;
-      color: #b91c1c;
-    }
-    .card-complete {
-      background: #dcfce7;
-      color: #166534;
-    }
-    .card-action-btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(0.97);
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 70px 24px;
-      background: rgba(255,255,255,0.7);
-      backdrop-filter: blur(12px);
-      border-radius: 40px;
-      margin-top: 20px;
-    }
-    .empty-state h3 {
-      font-size: 1.5rem;
-      margin-bottom: 12px;
-    }
-
-    /* Floating Action Button for Add New */
-    .fab-add {
-      position: fixed;
-      bottom: 30px;
-      right: 30px;
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    :root {
+      --bg: #f5f7ff; --card: #ffffff; --primary: #6d28d9; --primary-dark: #5b21b6;
+      --secondary: #8b5cf6; --text: #0f172a; --muted: #64748b; --border: #e2e8f0;
+      --success: #16a34a; --danger: #dc2626; --warning: #f59e0b;
+      --shadow: 0 10px 30px rgba(15,23,42,0.06); --radius: 24px;
+    }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: radial-gradient(circle at top right, #ede9fe 0%, transparent 30%),
+                  radial-gradient(circle at bottom left, #dbeafe 0%, transparent 35%),
+                  var(--bg);
+      color: var(--text); min-height: 100vh; padding: 18px;
+    }
+    .app-container { max-width: 1440px; margin: 0 auto; }
+    .icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; margin-right: 4px; vertical-align: middle; }
+    .icon-white { filter: brightness(0) invert(1); }
+    .nav-bar {
+      background: rgba(255,255,255,0.8); backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.4); border-radius: 999px;
+      padding: 10px 14px; margin-bottom: 22px; display: flex;
+      justify-content: space-between; align-items: center; gap: 14px;
+      box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 100;
+    }
+    .nav-links { display: flex; gap: 10px; overflow: auto; scrollbar-width: none; }
+    .nav-links::-webkit-scrollbar { display: none; }
+    .nav-link {
+      padding: 12px 18px; border-radius: 999px; text-decoration: none;
+      font-weight: 600; transition: 0.25s ease; background: #f8fafc;
+      color: #334155; white-space: nowrap; font-size: 0.92rem;
+      display: inline-flex; align-items: center; gap: 8px;
+    }
+    .nav-link.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 8px 20px rgba(109,40,217,0.28); }
+    .nav-link.active .icon { filter: brightness(0) invert(1); }
+    .nav-link:hover:not(.active) { background: #eef2ff; color: var(--primary); }
+    .install-btn {
       background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white;
-      width: 60px;
-      height: 60px;
-      border-radius: 30px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(109,40,217,0.4);
-      transition: all 0.25s ease;
-      z-index: 99;
-      border: none;
+      color: white; border: none; padding: 12px 18px; border-radius: 999px;
+      cursor: pointer; font-weight: 700; font-size: 0.9rem; display: none;
+      box-shadow: 0 8px 18px rgba(109,40,217,0.25); transition: 0.25s ease;
+      align-items: center; gap: 8px;
     }
-    .fab-add:hover {
-      transform: scale(1.08);
-      box-shadow: 0 12px 28px rgba(109,40,217,0.5);
-    }
-    .fab-add svg {
-      width: 28px;
-      height: 28px;
-      stroke: white;
-      stroke-width: 2;
-    }
-
-    @media (max-width: 680px) {
-      .cards-grid {
-        grid-template-columns: 1fr;
-      }
-      .customer-name {
-        font-size: 1.2rem;
-      }
-      .card-header {
-        padding: 16px 18px;
-      }
-      .card-details {
-        padding: 0 18px 18px 18px;
-      }
-      .fab-add {
-        bottom: 20px;
-        right: 20px;
-        width: 52px;
-        height: 52px;
-      }
-    }
+    .install-btn.show { display: inline-flex; }
+    .install-btn:hover { transform: translateY(-1px); }
+    .dashboard-header { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 24px; flex-wrap: wrap; }
+    .brand h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; line-height: 1.1; background: linear-gradient(135deg, #111827, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .brand p { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
+    .header-stats { display: flex; gap: 14px; flex-wrap: wrap; }
+    .stat-badge { background: rgba(255,255,255,0.8); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.6); padding: 14px 18px; border-radius: 22px; min-width: 120px; box-shadow: var(--shadow); }
+    .stat-label { display: block; font-size: 0.72rem; text-transform: uppercase; color: var(--muted); font-weight: 700; letter-spacing: 0.08em; margin-bottom: 4px; }
+    .stat-number { font-size: 1.6rem; font-weight: 900; color: var(--text); }
+    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 28px; }
+    .kpi-card { background: rgba(255,255,255,0.82); backdrop-filter: blur(14px); border-radius: var(--radius); padding: 22px; border: 1px solid rgba(255,255,255,0.5); box-shadow: var(--shadow); transition: 0.25s ease; }
+    .kpi-card:hover { transform: translateY(-4px); }
+    .kpi-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+    .kpi-value { font-size: 2.2rem; font-weight: 900; line-height: 1.1; color: var(--text); }
+    .kpi-sub { font-size: 0.82rem; margin-top: 10px; color: var(--success); font-weight: 600; }
+    .action-bar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
+    .search-wrapper { flex: 1; min-width: 240px; }
+    .search-wrapper input { width: 100%; padding: 16px 18px; border-radius: 999px; border: 1px solid var(--border); font-size: 0.92rem; background: white; box-shadow: var(--shadow); }
+    .search-wrapper input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 5px rgba(139,92,246,0.12); }
+    .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
+    .filter-chip { background: white; border: 1px solid var(--border); padding: 10px 18px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: 0.25s ease; }
+    .filter-chip.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-color: transparent; box-shadow: 0 8px 18px rgba(109,40,217,0.22); }
+    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
+    .appointment-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-radius: 28px; border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow); transition: all 0.25s ease; overflow: hidden; }
+    .appointment-card:hover { transform: translateY(-3px); box-shadow: 0 20px 35px rgba(15,23,42,0.12); }
+    .card-header { padding: 20px 22px; cursor: pointer; background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(248,245,255,0.5)); border-bottom: 1px solid rgba(109,40,217,0.08); transition: background 0.2s; }
+    .card-header:hover { background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(237,233,254,0.6)); }
+    .customer-name-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+    .customer-name { font-size: 1.35rem; font-weight: 800; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
+    .expand-icon { font-size: 0.9rem; transition: transform 0.25s ease; display: inline-block; color: var(--primary); }
+    .expand-icon.rotated { transform: rotate(90deg); }
+    .status-badge-card { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: 800; }
+    .status-completed-card { background: #dcfce7; color: #166534; }
+    .status-pending-card { background: #fef3c7; color: #92400e; }
+    .card-preview { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
+    .preview-item { display: inline-flex; align-items: center; gap: 6px; }
+    .card-details { padding: 0 22px 22px 22px; background: #fefcff; border-top: 1px solid rgba(139,92,246,0.12); animation: fadeSlideDown 0.25s ease; }
+    @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+    .details-grid-card { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; }
+    .detail-card-item { flex: 1; min-width: 150px; border-radius: 20px; padding: 12px 16px; background: #f9f6fe; }
+    .detail-label-card { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+    .detail-value-card { font-weight: 700; font-size: 0.95rem; color: var(--text); }
+    .amount-value { color: var(--primary); font-size: 1.2rem; font-weight: 800; }
+    .action-buttons-card { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; padding-top: 6px; border-top: 1px solid #e9e4f5; }
+    .card-action-btn { border: none; font-size: 0.75rem; font-weight: 800; padding: 10px 18px; border-radius: 40px; cursor: pointer; transition: 0.2s ease; display: inline-flex; align-items: center; gap: 6px; }
+    .card-edit { background: #eef2ff; color: #4338ca; }
+    .card-delete { background: #fee2e2; color: #b91c1c; }
+    .card-complete { background: #dcfce7; color: #166534; }
+    .card-action-btn:hover { transform: translateY(-2px); filter: brightness(0.97); }
+    .empty-state { text-align: center; padding: 70px 24px; background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border-radius: 40px; margin-top: 20px; }
+    .fab-add { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; width: 60px; height: 60px; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 20px rgba(109,40,217,0.4); transition: all 0.25s ease; z-index: 99; border: none; }
+    .fab-add:hover { transform: scale(1.08); }
+    @media (max-width: 680px) { .cards-grid { grid-template-columns: 1fr; } .fab-add { bottom: 20px; right: 20px; width: 52px; height: 52px; } }
   </style>
 </head>
 <body>
-
 <div class="app-container">
-  <!-- Navigation -->
   <div class="nav-bar">
     <div class="nav-links">
-      <a href="index.html" class="nav-link active">
-        <svg class="icon icon-white" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-        Appointments
-      </a>
-      <a href="reports.html" class="nav-link">
-        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
-        Yearly Reports
-      </a>
-      <a href="add-appointment.html" class="nav-link" id="addPageLink">
-        <svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-        Add New
-      </a>
+      <a href="index.html" class="nav-link active"><svg class="icon icon-white" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>Appointments</a>
+      <a href="reports.html" class="nav-link"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>Yearly Reports</a>
+      <a href="add.html" class="nav-link"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add New</a>
     </div>
-    <button id="installBtn" class="install-btn">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-      Install App
-    </button>
+    <button id="installBtn" class="install-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Install App</button>
   </div>
-
-  <!-- Dashboard Header -->
-  <div class="dashboard-header">
-    <div class="brand">
-      <h1>ServiceFlow Dashboard</h1>
-      <p>Smart appointment tracking · Revenue insights</p>
-    </div>
-    <div class="header-stats">
-      <div class="stat-badge">
-        <span class="stat-label">Today</span>
-        <span class="stat-number" id="todayCount">0</span>
-      </div>
-      <div class="stat-badge">
-        <span class="stat-label">Pending</span>
-        <span class="stat-number" id="pendingCount">0</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- KPI Cards -->
-  <div class="kpi-grid">
-    <div class="kpi-card">
-      <div class="kpi-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-        Total Revenue
-      </div>
-      <div class="kpi-value" id="totalCollectedKpi">ZMW 0</div>
-      <div class="kpi-sub">completed appointments</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Active
-      </div>
-      <div class="kpi-value" id="activeAppointmentsKpi">0</div>
-      <div class="kpi-sub">pending completion</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-        Completed
-      </div>
-      <div class="kpi-value" id="completedJobsKpi">0</div>
-      <div class="kpi-sub">successful services</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-title">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20L22 20"/><path d="M4 16L10 4L16 16L22 6"/></svg>
-        This Month
-      </div>
-      <div class="kpi-value" id="monthRevenueKpi">ZMW 0</div>
-      <div class="kpi-sub">revenue trend ↑</div>
-    </div>
-  </div>
-
-  <!-- Search & Filters -->
-  <div class="action-bar">
-    <div class="search-wrapper">
-      <input type="text" id="searchBar" placeholder="Search by customer, phone, or service...">
-    </div>
-    <div class="filter-group">
-      <div class="filter-chip" data-filter="all">All</div>
-      <div class="filter-chip" data-filter="pending">Pending</div>
-      <div class="filter-chip" data-filter="completed">Completed</div>
-    </div>
-  </div>
-
-  <!-- Expandable Cards Grid -->
+  <div class="dashboard-header"><div class="brand"><h1>ServiceFlow Dashboard</h1><p>Smart appointment tracking · Revenue insights</p></div><div class="header-stats"><div class="stat-badge"><span class="stat-label">Today</span><span class="stat-number" id="todayCount">0</span></div><div class="stat-badge"><span class="stat-label">Pending</span><span class="stat-number" id="pendingCount">0</span></div></div></div>
+  <div class="kpi-grid"><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Total Revenue</div><div class="kpi-value" id="totalCollectedKpi">ZMW 0</div><div class="kpi-sub">completed appointments</div></div><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Active</div><div class="kpi-value" id="activeAppointmentsKpi">0</div><div class="kpi-sub">pending completion</div></div><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Completed</div><div class="kpi-value" id="completedJobsKpi">0</div><div class="kpi-sub">successful services</div></div><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20L22 20"/><path d="M4 16L10 4L16 16L22 6"/></svg>This Month</div><div class="kpi-value" id="monthRevenueKpi">ZMW 0</div><div class="kpi-sub">revenue trend ↑</div></div></div>
+  <div class="action-bar"><div class="search-wrapper"><input type="text" id="searchBar" placeholder="Search by customer, phone, or service..."></div><div class="filter-group"><div class="filter-chip" data-filter="all">All</div><div class="filter-chip" data-filter="pending">Pending</div><div class="filter-chip" data-filter="completed">Completed</div></div></div>
   <div id="cardsGridContainer" class="cards-grid"></div>
-
-  <!-- Floating Action Button to go to Add Appointment page -->
-  <button class="fab-add" id="fabAddBtn" title="Add New Appointment">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-  </button>
+  <button class="fab-add" id="fabAddBtn" title="Add New Appointment"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
 </div>
-
 <script>
-  // Main dashboard page with all appointments - form removed, separate add page
   let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
-  let currentFilter = "all";
-  let deferredPrompt;
-  let expandedCardId = null;
-
-  const cardsContainer = document.getElementById("cardsGridContainer");
-  const searchInput = document.getElementById("searchBar");
-
-  function formatDateTime(datetimeStr) {
-    if(!datetimeStr) return "—";
-    const d = new Date(datetimeStr);
-    return d.toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
-  }
-  
-  function formatFullDate(datetimeStr) {
-    if(!datetimeStr) return "Not scheduled";
-    return new Date(datetimeStr).toLocaleString(undefined, { weekday:'short', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
-  }
-
-  function isToday(datetimeStr) {
-    const today = new Date().toISOString().slice(0,10);
-    return datetimeStr?.slice(0,10) === today;
-  }
-  
-  function isCurrentMonth(datetimeStr) {
-    const today = new Date();
-    const appointDate = new Date(datetimeStr);
-    return appointDate.getMonth() === today.getMonth() && appointDate.getFullYear() === today.getFullYear();
-  }
-  
+  let currentFilter = "all", expandedCardId = null, deferredPrompt;
+  const cardsContainer = document.getElementById("cardsGridContainer"), searchInput = document.getElementById("searchBar");
+  function formatDateTime(d) { if(!d) return "—"; return new Date(d).toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); }
+  function formatFullDate(d) { if(!d) return "Not scheduled"; return new Date(d).toLocaleString(undefined, { weekday:'short', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' }); }
+  function isToday(d) { return d?.slice(0,10) === new Date().toISOString().slice(0,10); }
+  function isCurrentMonth(d) { let td=new Date(), ad=new Date(d); return ad.getMonth()===td.getMonth() && ad.getFullYear()===td.getFullYear(); }
   function updateMetrics() {
-    const completedApps = appointments.filter(a => a.completed === true);
-    const pendingApps = appointments.filter(a => !a.completed);
-    const totalCollected = completedApps.reduce((sum,a)=>sum + parseFloat(a.amount || 0),0);
-    const thisMonthRevenue = appointments.filter(a => a.completed && isCurrentMonth(a.datetime)).reduce((sum,a)=>sum + parseFloat(a.amount || 0),0);
-    const todayApps = appointments.filter(a => isToday(a.datetime)).length;
-    document.getElementById("totalCollectedKpi").innerText = `ZMW ${totalCollected.toFixed(2)}`;
-    document.getElementById("activeAppointmentsKpi").innerText = pendingApps.length;
-    document.getElementById("completedJobsKpi").innerText = completedApps.length;
-    document.getElementById("monthRevenueKpi").innerText = `ZMW ${thisMonthRevenue.toFixed(2)}`;
-    document.getElementById("todayCount").innerText = todayApps;
-    document.getElementById("pendingCount").innerText = pendingApps.length;
+    let comp = appointments.filter(a=>a.completed), pend = appointments.filter(a=>!a.completed);
+    let total = comp.reduce((s,a)=>s+parseFloat(a.amount||0),0);
+    let monthRev = appointments.filter(a=>a.completed && isCurrentMonth(a.datetime)).reduce((s,a)=>s+parseFloat(a.amount||0),0);
+    document.getElementById("totalCollectedKpi").innerText = `ZMW ${total.toFixed(2)}`;
+    document.getElementById("activeAppointmentsKpi").innerText = pend.length;
+    document.getElementById("completedJobsKpi").innerText = comp.length;
+    document.getElementById("monthRevenueKpi").innerText = `ZMW ${monthRev.toFixed(2)}`;
+    document.getElementById("todayCount").innerText = appointments.filter(a=>isToday(a.datetime)).length;
+    document.getElementById("pendingCount").innerText = pend.length;
   }
-
-  function escapeHtml(str){
-    if(!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-      if(m==='&') return '&amp;';
-      if(m==='<') return '&lt;';
-      if(m==='>') return '&gt;';
-      return m;
-    });
-  }
-
-  function toggleExpand(cardId) {
-    if (expandedCardId === cardId) {
-      expandedCardId = null;
-    } else {
-      expandedCardId = cardId;
-    }
-    renderCards();
-  }
-
-  function handleEdit(id){
-    // Redirect to add page with edit mode via URL parameter
-    window.location.href = `add-appointment.html?edit=${id}`;
-  }
-
-  function handleDelete(id){
-    if(confirm("Delete this appointment?")){
-      appointments = appointments.filter(a => a.id != id);
-      if(expandedCardId === id) expandedCardId = null;
-      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
-      renderCards();
-    }
-  }
-
-  function handleToggle(id){
-    const index = appointments.findIndex(a => a.id == id);
-    if(index !== -1){
-      appointments[index].completed = !appointments[index].completed;
-      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
-      renderCards();
-    }
-  }
-
+  function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>]/g, m=> m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
+  function toggleExpand(id){ expandedCardId = expandedCardId===id ? null : id; renderCards(); }
+  function handleEdit(id){ window.location.href = `add.html?edit=${id}`; }
+  function handleDelete(id){ if(confirm("Delete this appointment?")){ appointments = appointments.filter(a=>a.id!=id); if(expandedCardId===id) expandedCardId=null; localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments)); renderCards(); } }
+  function handleToggle(id){ let idx = appointments.findIndex(a=>a.id==id); if(idx!==-1){ appointments[idx].completed = !appointments[idx].completed; localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments)); renderCards(); } }
   function renderCards() {
-    let filtered = appointments;
-    const searchTerm = searchInput.value.trim().toLowerCase();
-    if(searchTerm){
-      filtered = filtered.filter(a => 
-        a.name.toLowerCase().includes(searchTerm) || 
-        a.phone.includes(searchTerm) || 
-        a.service.toLowerCase().includes(searchTerm)
-      );
-    }
-    if(currentFilter === "pending") filtered = filtered.filter(a => !a.completed);
-    if(currentFilter === "completed") filtered = filtered.filter(a => a.completed);
-    
+    let filtered = appointments.filter(a=>{ let s=searchInput.value.trim().toLowerCase(); return !s || a.name.toLowerCase().includes(s) || a.phone.includes(s) || a.service.toLowerCase().includes(s); });
+    if(currentFilter==="pending") filtered = filtered.filter(a=>!a.completed);
+    if(currentFilter==="completed") filtered = filtered.filter(a=>a.completed);
     cardsContainer.innerHTML = "";
-    
-    if(filtered.length === 0){
-      cardsContainer.innerHTML = `<div class="empty-state"><h3>✨ No appointments found</h3><p style="color:var(--muted)">Click the + button to add your first appointment.</p></div>`;
-      updateMetrics();
-      return;
-    }
-    
+    if(filtered.length===0){ cardsContainer.innerHTML = `<div class="empty-state"><h3>✨ No appointments found</h3><p>Click the + button to add your first appointment.</p></div>`; updateMetrics(); return; }
     filtered.forEach(appt => {
-      const isExpanded = (expandedCardId === appt.id);
-      const statusClass = appt.completed ? 'status-completed-card' : 'status-pending-card';
-      const statusText = appt.completed ? 'Completed' : 'Pending';
-      const amountValue = parseFloat(appt.amount).toFixed(2);
-      
-      const card = document.createElement('div');
-      card.className = 'appointment-card';
-      if(appt.completed) card.style.background = 'rgba(240,253,244,0.88)';
-      
-      const headerDiv = document.createElement('div');
-      headerDiv.className = 'card-header';
-      headerDiv.setAttribute('data-id', appt.id);
-      
-      headerDiv.innerHTML = `
-        <div class="customer-name-row">
-          <div class="customer-name">
-            <span class="expand-icon">▶</span>
-            ${escapeHtml(appt.name)}
-          </div>
-          <div class="status-badge-card ${statusClass}">
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-            ${statusText}
-          </div>
-        </div>
-        <div class="card-preview">
-          <div class="preview-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-            ${escapeHtml(appt.phone)}
-          </div>
-          <div class="preview-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            ${escapeHtml(appt.service)}
-          </div>
-          <div class="preview-item">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-            ZMW ${amountValue}
-          </div>
-        </div>
-      `;
-      
-      card.appendChild(headerDiv);
-      
+      let isExpanded = expandedCardId===appt.id, statusClass = appt.completed ? 'status-completed-card' : 'status-pending-card', statusText = appt.completed ? 'Completed' : 'Pending', amountValue = parseFloat(appt.amount).toFixed(2);
+      let card = document.createElement('div'); card.className = 'appointment-card'; if(appt.completed) card.style.background = 'rgba(240,253,244,0.88)';
+      let header = document.createElement('div'); header.className = 'card-header'; header.setAttribute('data-id', appt.id);
+      header.innerHTML = `<div class="customer-name-row"><div class="customer-name"><span class="expand-icon">▶</span> ${escapeHtml(appt.name)}</div><div class="status-badge-card ${statusClass}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${statusText}</div></div><div class="card-preview"><div class="preview-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>${escapeHtml(appt.phone)}</div><div class="preview-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>${escapeHtml(appt.service)}</div><div class="preview-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>ZMW ${amountValue}</div></div>`;
+      card.appendChild(header);
       if(isExpanded){
-        const detailsDiv = document.createElement('div');
-        detailsDiv.className = 'card-details';
-        const fullDateFormatted = formatFullDate(appt.datetime);
-        detailsDiv.innerHTML = `
-          <div class="details-grid-card">
-            <div class="detail-card-item">
-              <div class="detail-label-card">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
-                CONTACT
-              </div>
-              <div class="detail-value-card">${escapeHtml(appt.phone)}</div>
-            </div>
-            <div class="detail-card-item">
-              <div class="detail-label-card">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-                SERVICE
-              </div>
-              <div class="detail-value-card"><strong>${escapeHtml(appt.service)}</strong></div>
-            </div>
-            <div class="detail-card-item">
-              <div class="detail-label-card">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-                DATE & TIME
-              </div>
-              <div class="detail-value-card">${fullDateFormatted}</div>
-            </div>
-            <div class="detail-card-item">
-              <div class="detail-label-card">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>
-                AMOUNT
-              </div>
-              <div class="detail-value-card amount-value">ZMW ${amountValue}</div>
-            </div>
-            <div class="detail-card-item">
-              <div class="detail-label-card">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                STATUS
-              </div>
-              <div class="detail-value-card"><span class="status-badge-card ${statusClass}">${statusText}</span></div>
-            </div>
-            ${appt.createdAt ? `<div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>CREATED</div><div class="detail-value-card">${new Date(appt.createdAt).toLocaleDateString()}</div></div>` : ''}
-          </div>
-          <div class="action-buttons-card">
-            <button class="card-action-btn card-edit" data-id="${appt.id}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="M15 5l4 4"/></svg>
-              Edit
-            </button>
-            <button class="card-action-btn card-delete" data-id="${appt.id}">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
-              Delete
-            </button>
-            <button class="card-action-btn card-complete" data-id="${appt.id}">
-              ${appt.completed ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/><path d="M16 2h6v6"/><path d="M21 3L12 12"/></svg> Undo' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Complete'}
-            </button>
-          </div>
-        `;
-        card.appendChild(detailsDiv);
+        let details = document.createElement('div'); details.className = 'card-details';
+        details.innerHTML = `<div class="details-grid-card"><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>CONTACT</div><div class="detail-value-card">${escapeHtml(appt.phone)}</div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>SERVICE</div><div class="detail-value-card"><strong>${escapeHtml(appt.service)}</strong></div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>DATE & TIME</div><div class="detail-value-card">${formatFullDate(appt.datetime)}</div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>AMOUNT</div><div class="detail-value-card amount-value">ZMW ${amountValue}</div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>STATUS</div><div class="detail-value-card"><span class="status-badge-card ${statusClass}">${statusText}</span></div></div></div><div class="action-buttons-card"><button class="card-action-btn card-edit" data-id="${appt.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="M15 5l4 4"/></svg>Edit</button><button class="card-action-btn card-delete" data-id="${appt.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button><button class="card-action-btn card-complete" data-id="${appt.id}">${appt.completed ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/><path d="M16 2h6v6"/><path d="M21 3L12 12"/></svg> Undo' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Complete'}</button></div>`;
+        card.appendChild(details);
       }
-      
       cardsContainer.appendChild(card);
     });
-    
-    // Attach click listeners
-    document.querySelectorAll('.card-header').forEach(header => {
-      header.addEventListener('click', (e) => {
-        e.stopPropagation();
-        const idAttr = header.getAttribute('data-id');
-        if(idAttr) {
-          const idNum = parseInt(idAttr);
-          if(!isNaN(idNum)) toggleExpand(idNum);
-        }
-      });
-    });
-    
-    document.querySelectorAll('.card-edit').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        handleEdit(btn.getAttribute('data-id'));
-      });
-    });
-    document.querySelectorAll('.card-delete').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        handleDelete(btn.getAttribute('data-id'));
-      });
-    });
-    document.querySelectorAll('.card-complete').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        handleToggle(btn.getAttribute('data-id'));
-      });
-    });
-    
-    // Rotate arrow for expanded card
-    document.querySelectorAll('.appointment-card').forEach(card => {
-      const iconSpan = card.querySelector('.expand-icon');
-      const header = card.querySelector('.card-header');
-      if(header && iconSpan) {
-        const idAttr = header.getAttribute('data-id');
-        if(idAttr && parseInt(idAttr) === expandedCardId) {
-          iconSpan.classList.add('rotated');
-        } else {
-          iconSpan.classList.remove('rotated');
-        }
-      }
-    });
-    
+    document.querySelectorAll('.card-header').forEach(h=>h.addEventListener('click',(e)=>{ e.stopPropagation(); let id=parseInt(h.dataset.id); if(!isNaN(id)) toggleExpand(id); }));
+    document.querySelectorAll('.card-edit').forEach(b=>b.addEventListener('click',(e)=>{ e.stopPropagation(); handleEdit(b.dataset.id); }));
+    document.querySelectorAll('.card-delete').forEach(b=>b.addEventListener('click',(e)=>{ e.stopPropagation(); handleDelete(b.dataset.id); }));
+    document.querySelectorAll('.card-complete').forEach(b=>b.addEventListener('click',(e)=>{ e.stopPropagation(); handleToggle(b.dataset.id); }));
+    document.querySelectorAll('.expand-icon').forEach(icon=>icon.classList.remove('rotated'));
+    if(expandedCardId) document.querySelectorAll(`.card-header[data-id="${expandedCardId}"] .expand-icon`).forEach(i=>i.classList.add('rotated'));
     updateMetrics();
   }
-
-  // Filter chips
-  document.querySelectorAll(".filter-chip").forEach(chip => {
-    chip.addEventListener("click", () => {
-      document.querySelectorAll(".filter-chip").forEach(c => c.classList.remove("active"));
-      chip.classList.add("active");
-      currentFilter = chip.dataset.filter;
-      expandedCardId = null;
-      renderCards();
-    });
-  });
-  
-  searchInput.addEventListener("input", () => {
-    expandedCardId = null;
-    renderCards();
-  });
-  
-  // FAB button to go to add page
-  document.getElementById("fabAddBtn").addEventListener("click", () => {
-    window.location.href = "add-appointment.html";
-  });
-  
-  // Also make the "Add New" nav link work
-  document.getElementById("addPageLink").addEventListener("click", (e) => {
-    e.preventDefault();
-    window.location.href = "add-appointment.html";
-  });
-  
-  // PWA install
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('installBtn').classList.add('show');
-  });
-  document.getElementById('installBtn').addEventListener('click', async () => {
-    if(deferredPrompt){
-      deferredPrompt.prompt();
-      await deferredPrompt.userChoice;
-      deferredPrompt = null;
-      document.getElementById('installBtn').classList.remove('show');
-    }
-  });
-  
-  // Listen for storage changes from add page
-  window.addEventListener('storage', (e) => {
-    if(e.key === 'serviceflow_appointments') {
-      appointments = JSON.parse(e.newValue) || [];
-      renderCards();
-    }
-  });
-  
-  // Initial render
+  document.querySelectorAll(".filter-chip").forEach(chip=>{ chip.addEventListener("click",()=>{ document.querySelectorAll(".filter-chip").forEach(c=>c.classList.remove("active")); chip.classList.add("active"); currentFilter=chip.dataset.filter; expandedCardId=null; renderCards(); }); });
+  searchInput.addEventListener("input",()=>{ expandedCardId=null; renderCards(); });
+  document.getElementById("fabAddBtn").addEventListener("click",()=>window.location.href="add.html");
+  window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('installBtn').classList.add('show'); });
+  document.getElementById('installBtn').addEventListener('click',async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; document.getElementById('installBtn').classList.remove('show'); } });
+  window.addEventListener('storage',(e)=>{ if(e.key==='serviceflow_appointments'){ appointments=JSON.parse(e.newValue)||[]; renderCards(); } });
   document.querySelector(".filter-chip[data-filter='all']").classList.add("active");
-  
-  // Function to refresh data (called when page becomes visible)
-  function refreshData() {
-    appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
-    renderCards();
-  }
-  
-  // Refresh when page becomes visible again (coming back from add page)
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) {
-      refreshData();
-    }
-  });
-  
-  refreshData();
+  renderCards();
 </script>
 </body>
 </html>
