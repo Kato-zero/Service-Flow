@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>ServiceFlow | Yearly Financial Reports</title>
+  <title>ServiceFlow | Financial Reports</title>
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#0f172a">
   <style>
@@ -131,6 +131,615 @@
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
+      margin-bottom: 32px;
     }
     .summary-card {
-      background: linear
+      background: linear-gradient(135deg, #10b981, #059669);
+      padding: 16px 24px;
+      border-radius: 20px;
+      color: white;
+      flex: 1;
+      min-width: 180px;
+    }
+    .summary-card small {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .summary-card .value {
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
+    /* Months Grid - Shows only months with data */
+    .months-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+    .month-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      animation: fadeIn 0.3s ease;
+    }
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .month-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+    }
+    .month-header {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      padding: 16px 20px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .month-year {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
+    .month-details {
+      padding: 20px;
+    }
+    .revenue-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 12px 0;
+      border-bottom: 1px solid #f0f2f5;
+    }
+    .revenue-label {
+      color: #64748b;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+    .revenue-value {
+      font-weight: 700;
+      font-size: 1.1rem;
+      color: #0f172a;
+    }
+    .appointments-count {
+      display: inline-block;
+      background: #f1f5f9;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      margin-top: 12px;
+      font-weight: 500;
+    }
+    .trend-up {
+      color: #10b981;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .trend-down {
+      color: #ef4444;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .no-data-message {
+      text-align: center;
+      padding: 60px 20px;
+      background: white;
+      border-radius: 28px;
+      color: #64748b;
+    }
+
+    /* Total Summary */
+    .total-summary {
+      background: linear-gradient(135deg, #1e293b, #0f172a);
+      border-radius: 28px;
+      padding: 32px;
+      color: white;
+      margin-top: 20px;
+    }
+    .total-summary h3 {
+      font-size: 1.2rem;
+      margin-bottom: 20px;
+      opacity: 0.9;
+    }
+    .total-amount {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 16px;
+    }
+    .total-details {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .total-detail-item {
+      background: rgba(255,255,255,0.1);
+      padding: 12px 20px;
+      border-radius: 16px;
+    }
+    .total-detail-item .label {
+      font-size: 0.75rem;
+      opacity: 0.8;
+      margin-bottom: 4px;
+    }
+    .total-detail-item .value {
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+
+    /* Export Button */
+    .export-btn {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .export-btn:hover {
+      background: #059669;
+      transform: scale(0.98);
+    }
+
+    /* Install Button */
+    .install-btn {
+      background: #10b981;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 40px;
+      cursor: pointer;
+      font-weight: 500;
+      display: none;
+    }
+    .install-btn.show {
+      display: inline-block;
+    }
+
+    /* Service tags */
+    .service-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 12px;
+    }
+    .service-tag {
+      background: #e0e7ff;
+      color: #4338ca;
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+
+    @media (max-width: 768px) {
+      body { padding: 16px; }
+      .total-amount { font-size: 2rem; }
+      .summary-card .value { font-size: 1.3rem; }
+    }
+  </style>
+</head>
+<body>
+<div class="app-container">
+  <!-- Navigation -->
+  <div class="nav-bar">
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">📅 Appointments</a>
+      <a href="reports.html" class="nav-link active">📊 Financial Reports</a>
+    </div>
+    <button id="installBtn" class="install-btn">📱 Install App</button>
+  </div>
+
+  <!-- Business Selector -->
+  <div class="business-selector">
+    <div class="business-header">
+      <div class="business-info">
+        <h2 id="businessName">✂️ Salon & Barber Shop</h2>
+        <p>Financial performance based on actual appointments</p>
+      </div>
+      <select id="businessType" class="business-type-select">
+        <option value="salon">💇 Salon & Barber</option>
+        <option value="repair">🔧 Repair Shop</option>
+        <option value="beauty">💅 Beauty & Spa</option>
+        <option value="auto">🚗 Auto Service</option>
+        <option value="cleaning">🧹 Cleaning Service</option>
+        <option value="consulting">📊 Consulting</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- Year Selector -->
+  <div class="year-selector">
+    <div class="year-controls">
+      <button class="year-btn" id="prevYear">← Previous Year</button>
+      <span class="current-year" id="currentYear">2024</span>
+      <button class="year-btn" id="nextYear">Next Year →</button>
+    </div>
+    <button class="export-btn" id="exportReport">📥 Export Report (CSV)</button>
+  </div>
+
+  <!-- Summary Cards -->
+  <div class="summary-cards" id="summaryCards"></div>
+
+  <!-- Months Grid - Only shows months with data -->
+  <h3 style="margin-bottom: 16px; color: #1e293b;">📆 Months with Appointments</h3>
+  <div class="months-grid" id="monthsGrid"></div>
+
+  <!-- Total Summary -->
+  <div class="total-summary" id="totalSummary"></div>
+</div>
+
+<script>
+  const monthNames = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  const businessConfigs = {
+    salon: { name: "✂️ Salon & Barber Shop", currency: "$", icon: "✂️" },
+    repair: { name: "🔧 Repair Shop", currency: "$", icon: "🔧" },
+    beauty: { name: "💅 Beauty & Spa", currency: "$", icon: "💅" },
+    auto: { name: "🚗 Auto Service", currency: "$", icon: "🚗" },
+    cleaning: { name: "🧹 Cleaning Service", currency: "$", icon: "🧹" },
+    consulting: { name: "📊 Consulting", currency: "$", icon: "📊" }
+  };
+
+  let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
+  let currentBusiness = localStorage.getItem("business_type") || "salon";
+  let currentYear = new Date().getFullYear();
+  let deferredPrompt;
+
+  const businessSelect = document.getElementById("businessType");
+  const businessName = document.getElementById("businessName");
+  const currentYearSpan = document.getElementById("currentYear");
+
+  // Get months that actually have appointments
+  function getMonthsWithData(year) {
+    const monthsData = {};
+    const businessApps = appointments.filter(a => a.business === currentBusiness);
+    
+    businessApps.forEach(app => {
+      const appDate = new Date(app.datetime);
+      if (appDate.getFullYear() === year) {
+        const month = appDate.getMonth();
+        const monthKey = `${year}-${month}`;
+        
+        if (!monthsData[monthKey]) {
+          monthsData[monthKey] = {
+            month: month,
+            year: year,
+            revenue: 0,
+            completedAppointments: 0,
+            totalAppointments: 0,
+            pendingAppointments: 0,
+            services: [],
+            amounts: []
+          };
+        }
+        
+        monthsData[monthKey].totalAppointments++;
+        monthsData[monthKey].services.push(app.service);
+        monthsData[monthKey].amounts.push(parseFloat(app.amount || 0));
+        
+        if (app.completed) {
+          monthsData[monthKey].revenue += parseFloat(app.amount || 0);
+          monthsData[monthKey].completedAppointments++;
+        } else {
+          monthsData[monthKey].pendingAppointments++;
+        }
+      }
+    });
+    
+    // Convert to array and sort by month
+    return Object.values(monthsData).sort((a, b) => a.month - b.month);
+  }
+
+  function getYearlyTotal(monthsData) {
+    let totalRevenue = 0;
+    let totalCompleted = 0;
+    let totalAppointments = 0;
+    let totalPending = 0;
+
+    monthsData.forEach(month => {
+      totalRevenue += month.revenue;
+      totalCompleted += month.completedAppointments;
+      totalAppointments += month.totalAppointments;
+      totalPending += month.pendingAppointments;
+    });
+
+    return { totalRevenue, totalCompleted, totalAppointments, totalPending };
+  }
+
+  function getTopServices(monthsData) {
+    const serviceCount = {};
+    monthsData.forEach(month => {
+      month.services.forEach(service => {
+        serviceCount[service] = (serviceCount[service] || 0) + 1;
+      });
+    });
+    const sorted = Object.entries(serviceCount).sort((a, b) => b[1] - a[1]);
+    return sorted.slice(0, 3);
+  }
+
+  function renderReports() {
+    const config = businessConfigs[currentBusiness];
+    const monthsWithData = getMonthsWithData(currentYear);
+    const yearlyTotal = getYearlyTotal(monthsWithData);
+    const topServices = getTopServices(monthsWithData);
+    const monthsGrid = document.getElementById("monthsGrid");
+    const summaryCards = document.getElementById("summaryCards");
+    const totalSummary = document.getElementById("totalSummary");
+
+    // If no data for this year
+    if (monthsWithData.length === 0) {
+      monthsGrid.innerHTML = `<div class="no-data-message">
+        <div style="font-size: 3rem; margin-bottom: 16px;">📭</div>
+        <h3>No appointments found for ${currentYear}</h3>
+        <p style="margin-top: 8px;">Add some appointments in the main dashboard to see financial reports.</p>
+      </div>`;
+      
+      summaryCards.innerHTML = `
+        <div class="summary-card">
+          <small>Total Revenue</small>
+          <div class="value">${config.currency}0.00</div>
+        </div>
+        <div class="summary-card">
+          <small>Completed Jobs</small>
+          <div class="value">0</div>
+        </div>
+        <div class="summary-card">
+          <small>Total Appointments</small>
+          <div class="value">0</div>
+        </div>
+        <div class="summary-card">
+          <small>Active Months</small>
+          <div class="value">0</div>
+        </div>
+      `;
+      
+      totalSummary.innerHTML = `
+        <h3>📊 ${currentYear} Financial Summary</h3>
+        <div class="total-amount">${config.currency}0.00</div>
+        <div class="total-details">
+          <div class="total-detail-item">
+            <div class="label">No data available</div>
+            <div class="value">Add appointments</div>
+          </div>
+        </div>
+      `;
+      return;
+    }
+
+    // Update summary cards
+    summaryCards.innerHTML = `
+      <div class="summary-card">
+        <small>Total Revenue</small>
+        <div class="value">${config.currency}${yearlyTotal.totalRevenue.toFixed(2)}</div>
+      </div>
+      <div class="summary-card">
+        <small>Completed Jobs</small>
+        <div class="value">${yearlyTotal.totalCompleted}</div>
+      </div>
+      <div class="summary-card">
+        <small>Total Appointments</small>
+        <div class="value">${yearlyTotal.totalAppointments}</div>
+      </div>
+      <div class="summary-card">
+        <small>Active Months</small>
+        <div class="value">${monthsWithData.length}</div>
+      </div>
+    `;
+
+    // Render monthly grid - ONLY months with data
+    monthsGrid.innerHTML = '';
+    monthsWithData.forEach((monthData, index) => {
+      const monthCard = document.createElement('div');
+      monthCard.className = 'month-card';
+      
+      // Calculate trend from previous month
+      let trend = 0;
+      let trendText = '';
+      if (index > 0) {
+        const prevMonthRevenue = monthsWithData[index - 1].revenue;
+        trend = monthData.revenue - prevMonthRevenue;
+        const trendPercent = prevMonthRevenue > 0 ? (trend / prevMonthRevenue) * 100 : 0;
+        trendText = `<span class="${trend >= 0 ? 'trend-up' : 'trend-down'}">
+          ${trend >= 0 ? '↑' : '↓'} ${Math.abs(trendPercent).toFixed(1)}% from previous month
+        </span>`;
+      }
+      
+      const averageTicket = monthData.completedAppointments > 0 
+        ? monthData.revenue / monthData.completedAppointments 
+        : 0;
+      
+      // Get unique services for this month
+      const uniqueServices = [...new Set(monthData.services)];
+      const topService = uniqueServices.slice(0, 2);
+      
+      monthCard.innerHTML = `
+        <div class="month-header">
+          <span>${monthNames[monthData.month]}</span>
+          <span class="month-year">${monthData.year}</span>
+        </div>
+        <div class="month-details">
+          <div class="revenue-item">
+            <span class="revenue-label">💰 Total Revenue</span>
+            <span class="revenue-value">${config.currency}${monthData.revenue.toFixed(2)}</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-label">✅ Completed Jobs</span>
+            <span class="revenue-value">${monthData.completedAppointments}</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-label">⏳ Pending Jobs</span>
+            <span class="revenue-value">${monthData.pendingAppointments}</span>
+          </div>
+          <div class="revenue-item">
+            <span class="revenue-label">📊 Average Ticket</span>
+            <span class="revenue-value">${config.currency}${averageTicket.toFixed(2)}</span>
+          </div>
+          <div class="appointments-count">
+            📅 ${monthData.totalAppointments} total appointments
+            ${trendText ? `<div style="margin-top: 6px;">${trendText}</div>` : ''}
+          </div>
+          ${topService.length > 0 ? `
+            <div class="service-tags">
+              ${topService.map(s => `<span class="service-tag">${escapeHtml(s)}</span>`).join('')}
+              ${uniqueServices.length > 2 ? `<span class="service-tag">+${uniqueServices.length - 2} more</span>` : ''}
+            </div>
+          ` : ''}
+        </div>
+      `;
+      monthsGrid.appendChild(monthCard);
+    });
+
+    // Render total summary
+    const averageMonthlyRevenue = yearlyTotal.totalRevenue / monthsWithData.length;
+    const averageTicketOverall = yearlyTotal.totalCompleted > 0 
+      ? yearlyTotal.totalRevenue / yearlyTotal.totalCompleted 
+      : 0;
+    const completionRate = yearlyTotal.totalAppointments > 0 
+      ? (yearlyTotal.totalCompleted / yearlyTotal.totalAppointments) * 100 
+      : 0;
+    
+    // Find best month
+    const bestMonth = monthsWithData.reduce((best, current) => 
+      current.revenue > best.revenue ? current : best, monthsWithData[0]);
+    
+    totalSummary.innerHTML = `
+      <h3>📊 ${currentYear} Financial Summary</h3>
+      <div class="total-amount">${config.currency}${yearlyTotal.totalRevenue.toFixed(2)}</div>
+      <div class="total-details">
+        <div class="total-detail-item">
+          <div class="label">Average Monthly Revenue</div>
+          <div class="value">${config.currency}${averageMonthlyRevenue.toFixed(2)}</div>
+        </div>
+        <div class="total-detail-item">
+          <div class="label">Average Ticket Size</div>
+          <div class="value">${config.currency}${averageTicketOverall.toFixed(2)}</div>
+        </div>
+        <div class="total-detail-item">
+          <div class="label">Completion Rate</div>
+          <div class="value">${completionRate.toFixed(1)}%</div>
+        </div>
+        <div class="total-detail-item">
+          <div class="label">Best Month</div>
+          <div class="value">${monthNames[bestMonth.month]}</div>
+          <div class="label">${config.currency}${bestMonth.revenue.toFixed(2)}</div>
+        </div>
+      </div>
+      <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+        <div class="label">📋 Top Services of the Year</div>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px;">
+          ${topServices.map(service => 
+            `<span style="background: rgba(255,255,255,0.15); padding: 4px 12px; border-radius: 20px; font-size: 0.8rem;">
+              ${escapeHtml(service[0])} (${service[1]}x)
+            </span>`
+          ).join('')}
+          ${topServices.length === 0 ? '<span style="opacity: 0.7;">No services recorded yet</span>' : ''}
+        </div>
+      </div>
+    `;
+  }
+
+  function exportToCSV() {
+    const config = businessConfigs[currentBusiness];
+    const monthsWithData = getMonthsWithData(currentYear);
+    const yearlyTotal = getYearlyTotal(monthsWithData);
+    
+    let csvContent = "Month,Year,Total Appointments,Completed Jobs,Pending Jobs,Revenue,Average Ticket\n";
+    
+    monthsWithData.forEach(month => {
+      const averageTicket = month.completedAppointments > 0 
+        ? month.revenue / month.completedAppointments 
+        : 0;
+      csvContent += `${monthNames[month.month]},${month.year},${month.totalAppointments},${month.completedAppointments},${month.pendingAppointments},${month.revenue.toFixed(2)},${averageTicket.toFixed(2)}\n`;
+    });
+    
+    csvContent += `\n"YEARLY SUMMARY",${currentYear},${yearlyTotal.totalAppointments},${yearlyTotal.totalCompleted},${yearlyTotal.totalPending},${yearlyTotal.totalRevenue.toFixed(2)},\n`;
+    
+    const blob = new Blob([csvContent], { type: 'text/csv' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${config.name.replace(/[^a-z0-9]/gi, '_')}_${currentYear}_report.csv`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
+
+  function escapeHtml(str) { 
+    if(!str) return ''; 
+    return str.replace(/[&<>]/g, function(m){
+      if(m==='&') return '&amp;'; 
+      if(m==='<') return '&lt;'; 
+      if(m==='>') return '&gt;'; 
+      return m;
+    });
+  }
+
+  function updateBusinessUI() {
+    const config = businessConfigs[currentBusiness];
+    businessName.textContent = config.name;
+    localStorage.setItem("business_type", currentBusiness);
+    renderReports();
+  }
+
+  // Event listeners
+  businessSelect.addEventListener("change", (e) => {
+    currentBusiness = e.target.value;
+    updateBusinessUI();
+  });
+
+  document.getElementById("prevYear").addEventListener("click", () => {
+    currentYear--;
+    currentYearSpan.textContent = currentYear;
+    renderReports();
+  });
+
+  document.getElementById("nextYear").addEventListener("click", () => {
+    currentYear++;
+    currentYearSpan.textContent = currentYear;
+    renderReports();
+  });
+
+  document.getElementById("exportReport").addEventListener("click", exportToCSV);
+
+  // PWA Installation
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBtn').classList.add('show');
+  });
+  
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('installBtn').classList.remove('show');
+    }
+  });
+
+  // Initialize
+  businessSelect.value = currentBusiness;
+  currentYearSpan.textContent = currentYear;
+  updateBusinessUI();
+</script>
+</body>
+</html>
