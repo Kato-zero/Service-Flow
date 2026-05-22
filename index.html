@@ -397,35 +397,16 @@
   <!-- Navigation -->
   <div class="nav-bar">
     <div class="nav-links">
-      <a href="index.html" class="nav-link active">📅 Appointments</a>
-      <a href="reports.html" class="nav-link">📊 Yearly Reports</a>
+      <a href="index.html" class="nav-link active">Appointments</a>
+      <a href="reports.html" class="nav-link">Yearly Reports</a>
     </div>
     <button id="installBtn" class="install-btn">📱 Install App</button>
-  </div>
-
-  <!-- Business Type Selector -->
-  <div class="business-selector">
-    <div class="business-header">
-      <div class="business-info">
-        <h2 id="businessName">✂️ Salon & Barber Shop</h2>
-        <p>Complete appointment management system</p>
-      </div>
-      <select id="businessType" class="business-type-select">
-        <option value="salon">💇 Salon & Barber</option>
-        <option value="repair">🔧 Repair Shop</option>
-        <option value="beauty">💅 Beauty & Spa</option>
-        <option value="auto">🚗 Auto Service</option>
-        <option value="cleaning">🧹 Cleaning Service</option>
-        <option value="consulting">📊 Consulting</option>
-      </select>
-    </div>
-    <div class="quick-stats" id="quickStats"></div>
   </div>
 
   <!-- Dashboard Header -->
   <div class="dashboard-header">
     <div class="brand">
-      <h1 id="dynamicTitle">⚡ ServiceFlow Dashboard</h1>
+      <h1 id="dynamicTitle">ServiceFlow Dashboard</h1>
       <p>Smart appointment tracking · Revenue insights</p>
     </div>
     <div class="header-stats">
@@ -436,15 +417,15 @@
 
   <!-- KPI Cards -->
   <div class="kpi-grid">
-    <div class="kpi-card"><div class="kpi-title">💰 TOTAL REVENUE</div><div class="kpi-value" id="totalCollectedKpi">$0</div><div class="kpi-sub">completed appointments</div></div>
-    <div class="kpi-card"><div class="kpi-title">📋 ACTIVE</div><div class="kpi-value" id="activeAppointmentsKpi">0</div><div class="kpi-sub">pending completion</div></div>
-    <div class="kpi-card"><div class="kpi-title">✅ COMPLETED</div><div class="kpi-value" id="completedJobsKpi">0</div><div class="kpi-sub">successful services</div></div>
-    <div class="kpi-card"><div class="kpi-title">📅 THIS MONTH</div><div class="kpi-value" id="monthRevenueKpi">$0</div><div class="kpi-sub">revenue trend ↑</div></div>
+    <div class="kpi-card"><div class="kpi-title"> TOTAL REVENUE</div><div class="kpi-value" id="totalCollectedKpi">$0</div><div class="kpi-sub">completed appointments</div></div>
+    <div class="kpi-card"><div class="kpi-title"> ACTIVE</div><div class="kpi-value" id="activeAppointmentsKpi">0</div><div class="kpi-sub">pending completion</div></div>
+    <div class="kpi-card"><div class="kpi-title"> COMPLETED</div><div class="kpi-value" id="completedJobsKpi">0</div><div class="kpi-sub">successful services</div></div>
+    <div class="kpi-card"><div class="kpi-title"> THIS MONTH</div><div class="kpi-value" id="monthRevenueKpi">$0</div><div class="kpi-sub">revenue trend ↑</div></div>
   </div>
 
   <!-- Form Card -->
   <div class="form-card">
-    <div class="form-title">✍️ <span id="formModeText">New Appointment</span><span id="editModeChip" class="edit-mode-badge" style="display:none;">Editing</span></div>
+    <div class="form-title"><span id="formModeText">Add New Appointment</span><span id="editModeChip" class="edit-mode-badge" style="display:none;">Editing</span></div>
     <form id="appointmentForm" class="appointment-form">
       <div class="input-group"><label>Customer name</label><input type="text" id="name" placeholder="Full name" required></div>
       <div class="input-group"><label>Contact</label><input type="text" id="phone" placeholder="Phone number" required></div>
@@ -458,13 +439,13 @@
       </div>
       <div class="input-group"><label>Date & Time</label><input type="datetime-local" id="datetime" required></div>
       <div class="input-group"><label>Price ($)</label><input type="number" id="amount" placeholder="0.00" step="0.01" required></div>
-      <div><button type="submit" class="btn-primary">💾 Save Appointment</button></div>
+      <div><button type="submit" class="btn-primary">Save Appointment</button></div>
     </form>
   </div>
 
   <!-- Search & Filters -->
   <div class="action-bar">
-    <div class="search-wrapper"><input type="text" id="searchBar" placeholder="🔍 Search by name, phone, or service..."></div>
+    <div class="search-wrapper"><input type="text" id="searchBar" placeholder=" Search by name, phone, or service..."></div>
     <div class="filter-group"><div class="filter-chip" data-filter="all">All</div><div class="filter-chip" data-filter="pending">Pending</div><div class="filter-chip" data-filter="completed">Completed</div></div>
   </div>
 
@@ -479,44 +460,8 @@
 
 <script>
   // Business configurations
-  const businessConfigs = {
-    salon: { 
-      name: "✂️ Salon & Barber Shop", 
-      currency: "$", 
-      icon: "✂️",
-      suggestedServices: ["Haircut", "Beard Trim", "Hair Color", "Styling", "Full Package", "Shave", "Kids Haircut", "Hot Towel Shave", "Hair Treatment"]
-    },
-    repair: { 
-      name: "🔧 Repair Shop", 
-      currency: "$", 
-      icon: "🔧",
-      suggestedServices: ["Screen Repair", "Battery Replacement", "Water Damage Repair", "Software Fix", "Full Service", "Charging Port Repair", "Camera Fix", "Speaker Repair", "Data Recovery"]
-    },
-    beauty: { 
-      name: "💅 Beauty & Spa", 
-      currency: "$", 
-      icon: "💅",
-      suggestedServices: ["Manicure", "Pedicure", "Facial", "Massage", "Full Spa", "Waxing", "Makeup", "Eyelash Extensions", "Body Scrub"]
-    },
-    auto: { 
-      name: "🚗 Auto Service", 
-      currency: "$", 
-      icon: "🚗",
-      suggestedServices: ["Oil Change", "Tire Rotation", "Brake Service", "Engine Check", "Full Tune-up", "Battery Replacement", "AC Repair", "Wheel Alignment", "Car Wash"]
-    },
-    cleaning: { 
-      name: "🧹 Cleaning Service", 
-      currency: "$", 
-      icon: "🧹",
-      suggestedServices: ["Basic Clean", "Deep Clean", "Move Out Clean", "Office Clean", "Window Wash", "Carpet Clean", "Post-Construction", "Disinfection Service"]
-    },
-    consulting: { 
-      name: "📊 Consulting", 
-      currency: "$", 
-      icon: "📊",
-      suggestedServices: ["1hr Session", "Strategy Call", "Full Day Consult", "Package Deal", "Retainer Service", "Business Audit", "Marketing Plan", "Financial Review"]
-    }
-  };
+ 
+
 
   let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
   let currentBusiness = localStorage.getItem("business_type") || "salon";
@@ -569,7 +514,7 @@
     const totalApps = appointments.filter(a => a.business === currentBusiness).length;
     const totalRevenue = appointments.filter(a => a.business === currentBusiness && a.completed).reduce((sum, a) => sum + parseFloat(a.amount), 0);
     const config = businessConfigs[currentBusiness];
-    statsDiv.innerHTML = `<div class="quick-stat">📊 Total: ${totalApps} appointments</div><div class="quick-stat">💰 Revenue: ${config.currency}${totalRevenue.toFixed(2)}</div>`;
+    statsDiv.innerHTML = `<div class="quick-stat">Total: ${totalApps} appointments</div><div class="quick-stat">Revenue: ${config.currency}${totalRevenue.toFixed(2)}</div>`;
     localStorage.setItem("business_type", currentBusiness);
   }
 
@@ -633,9 +578,9 @@
           <td class="amount-cell">${config.currency}${parseFloat(appt.amount).toFixed(2)}</td>
           <td>${statusHtml}</td>
           <td class="btn-icon-group">
-            <button class="action-btn btn-edit" data-id="${appt.id}">✏️ Edit</button>
-            <button class="action-btn btn-delete" data-id="${appt.id}">🗑️ Delete</button>
-            <button class="action-btn btn-complete" data-id="${appt.id}">${appt.completed ? '↩️ Undo' : '✅ Complete'}</button>
+            <button class="action-btn btn-edit" data-id="${appt.id}">Edit</button>
+            <button class="action-btn btn-delete" data-id="${appt.id}"> Delete</button>
+            <button class="action-btn btn-complete" data-id="${appt.id}">${appt.completed ? '↩Undo' : 'Complete'}</button>
           </td>
         `;
         tbody.appendChild(row);
