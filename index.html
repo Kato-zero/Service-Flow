@@ -419,7 +419,7 @@
       box-shadow:0 8px 18px rgba(109,40,217,0.22);
     }
 
-    /* EXPANDABLE CARD GRID - replacing table */
+    /* EXPANDABLE CARD GRID */
     .cards-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
@@ -649,7 +649,7 @@
   <div class="kpi-grid">
     <div class="kpi-card">
       <div class="kpi-title">💰 Total Revenue</div>
-      <div class="kpi-value" id="totalCollectedKpi">$0</div>
+      <div class="kpi-value" id="totalCollectedKpi">ZMW 0</div>
       <div class="kpi-sub">completed appointments</div>
     </div>
     <div class="kpi-card">
@@ -664,7 +664,7 @@
     </div>
     <div class="kpi-card">
       <div class="kpi-title">📈 This Month</div>
-      <div class="kpi-value" id="monthRevenueKpi">$0</div>
+      <div class="kpi-value" id="monthRevenueKpi">ZMW 0</div>
       <div class="kpi-sub">revenue trend ↑</div>
     </div>
   </div>
@@ -697,7 +697,7 @@
         <input type="datetime-local" id="datetime" required>
       </div>
       <div class="input-group">
-        <label>Price ($)</label>
+        <label>Price (ZMW)</label>
         <input type="number" id="amount" placeholder="0.00" step="0.01" required>
       </div>
       <div>
@@ -718,18 +718,18 @@
     </div>
   </div>
 
-  <!-- Expandable Cards Grid (replaces table) -->
+  <!-- Expandable Cards Grid -->
   <div id="cardsGridContainer" class="cards-grid"></div>
 
 </div>
 
 <script>
-  // ORIGINAL LOGIC preserved - only UI changed from table to expandable cards
+  // ORIGINAL LOGIC preserved - currency changed to ZMW
   let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
   let editIndex = -1;
   let currentFilter = "all";
   let deferredPrompt;
-  let expandedCardId = null; // track which card is expanded
+  let expandedCardId = null;
 
   const form = document.getElementById("appointmentForm");
   const cardsContainer = document.getElementById("cardsGridContainer");
@@ -763,10 +763,10 @@
     const totalCollected = completedApps.reduce((sum,a)=>sum + parseFloat(a.amount || 0),0);
     const thisMonthRevenue = appointments.filter(a => a.completed && isCurrentMonth(a.datetime)).reduce((sum,a)=>sum + parseFloat(a.amount || 0),0);
     const todayApps = appointments.filter(a => isToday(a.datetime)).length;
-    document.getElementById("totalCollectedKpi").innerText = `$${totalCollected.toFixed(2)}`;
+    document.getElementById("totalCollectedKpi").innerText = `ZMW ${totalCollected.toFixed(2)}`;
     document.getElementById("activeAppointmentsKpi").innerText = pendingApps.length;
     document.getElementById("completedJobsKpi").innerText = completedApps.length;
-    document.getElementById("monthRevenueKpi").innerText = `$${thisMonthRevenue.toFixed(2)}`;
+    document.getElementById("monthRevenueKpi").innerText = `ZMW ${thisMonthRevenue.toFixed(2)}`;
     document.getElementById("todayCount").innerText = todayApps;
     document.getElementById("pendingCount").innerText = pendingApps.length;
   }
@@ -817,12 +817,10 @@
       const statusText = appt.completed ? '✓ Completed' : '⏳ Pending';
       const amountValue = parseFloat(appt.amount).toFixed(2);
       
-      // Build card
       const card = document.createElement('div');
       card.className = 'appointment-card';
       if(appt.completed) card.style.background = 'rgba(240,253,244,0.88)';
       
-      // Header (clickable area)
       const headerDiv = document.createElement('div');
       headerDiv.className = 'card-header';
       headerDiv.setAttribute('data-id', appt.id);
@@ -838,13 +836,12 @@
         <div class="card-preview">
           <div class="preview-item">📞 ${escapeHtml(appt.phone)}</div>
           <div class="preview-item">🛠 ${escapeHtml(appt.service)}</div>
-          <div class="preview-item">💰 $${amountValue}</div>
+          <div class="preview-item">💰 ZMW ${amountValue}</div>
         </div>
       `;
       
       card.appendChild(headerDiv);
       
-      // Expanded details section
       if(isExpanded){
         const detailsDiv = document.createElement('div');
         detailsDiv.className = 'card-details';
@@ -865,7 +862,7 @@
             </div>
             <div class="detail-card-item">
               <div class="detail-label-card">💰 AMOUNT</div>
-              <div class="detail-value-card amount-value">$${amountValue}</div>
+              <div class="detail-value-card amount-value">ZMW ${amountValue}</div>
             </div>
             <div class="detail-card-item">
               <div class="detail-label-card">📌 STATUS</div>
@@ -885,7 +882,7 @@
       cardsContainer.appendChild(card);
     });
     
-    // Attach click listeners for expand/collapse (only on header)
+    // Attach click listeners for expand/collapse
     document.querySelectorAll('.card-header').forEach(header => {
       header.addEventListener('click', (e) => {
         e.stopPropagation();
@@ -897,7 +894,7 @@
       });
     });
     
-    // Attach action buttons for edit/delete/complete
+    // Attach action buttons
     document.querySelectorAll('.card-edit').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();
