@@ -7,197 +7,564 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6d28d9">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    :root { --bg: #f5f7ff; --primary: #6d28d9; --primary-dark: #5b21b6; --secondary: #8b5cf6; --text: #0f172a; --muted: #64748b; --border: #e2e8f0; --success: #16a34a; --shadow: 0 10px 30px rgba(15,23,42,0.06); }
-    body { font-family: 'Inter', system-ui, sans-serif; background: radial-gradient(circle at top right, #ede9fe 0%, transparent 30%), radial-gradient(circle at bottom left, #dbeafe 0%, transparent 35%), var(--bg); color: var(--text); min-height: 100vh; padding: 18px; }
-    .app-container { max-width: 800px; margin: 0 auto; }
-    .icon { width: 18px; height: 18px; display: inline-flex; vertical-align: middle; margin-right: 4px; }
-    .nav-bar { background: rgba(255,255,255,0.8); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4); border-radius: 999px; padding: 10px 14px; margin-bottom: 22px; display: flex; justify-content: space-between; align-items: center; gap: 14px; box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 100; }
-    .nav-links { display: flex; gap: 10px; overflow: auto; scrollbar-width: none; }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+    :root {
+      --bg: #f0eeff;
+      --surface: #ffffff;
+      --surface2: #f7f5ff;
+      --surface3: #edeafc;
+      --text: #1a1333;
+      --text2: #5c5478;
+      --text3: #9b93b8;
+      --border: rgba(109,40,217,0.12);
+      --border2: rgba(109,40,217,0.22);
+      --accent: #6d28d9;
+      --accent2: #8b5cf6;
+      --accent-bg: #ede9fe;
+      --accent-text: #4c1d95;
+      --green-bg: #dcfce7;
+      --green-text: #14532d;
+      --green-border: rgba(22,163,74,0.25);
+      --amber-bg: #fef9c3;
+      --amber-text: #713f12;
+      --amber-border: rgba(202,138,4,0.25);
+      --red-bg: #fee2e2;
+      --red-text: #7f1d1d;
+      --red-border: rgba(220,38,38,0.2);
+      --blue-bg: #dbeafe;
+      --blue-text: #1e3a5f;
+      --blue-border: rgba(37,99,235,0.2);
+      --shadow-sm: 0 1px 4px rgba(109,40,217,0.08), 0 2px 8px rgba(109,40,217,0.06);
+      --shadow-md: 0 4px 12px rgba(109,40,217,0.10), 0 2px 6px rgba(109,40,217,0.08);
+      --shadow-lg: 0 8px 24px rgba(109,40,217,0.13), 0 3px 8px rgba(109,40,217,0.09);
+      --shadow-btn: 0 2px 6px rgba(109,40,217,0.18), 0 1px 3px rgba(109,40,217,0.12);
+      --r: 14px;
+      --r-sm: 9px;
+      --r-pill: 999px;
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f0c1a;
+      --surface: #1c1729;
+      --surface2: #241e35;
+      --surface3: #2d2645;
+      --text: #f0ecff;
+      --text2: #a899cc;
+      --text3: #5e5478;
+      --border: rgba(139,92,246,0.15);
+      --border2: rgba(139,92,246,0.28);
+      --accent: #a78bfa;
+      --accent2: #c4b5fd;
+      --accent-bg: #2d1f5e;
+      --accent-text: #ddd6fe;
+      --green-bg: #14532d;
+      --green-text: #bbf7d0;
+      --green-border: rgba(74,222,128,0.2);
+      --amber-bg: #451a03;
+      --amber-text: #fde68a;
+      --amber-border: rgba(251,191,36,0.2);
+      --red-bg: #450a0a;
+      --red-text: #fecaca;
+      --red-border: rgba(248,113,113,0.2);
+      --blue-bg: #1e3a5f;
+      --blue-text: #bfdbfe;
+      --blue-border: rgba(96,165,250,0.2);
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.25);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.5), 0 3px 8px rgba(0,0,0,0.35);
+      --shadow-btn: 0 2px 6px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 12px;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    .app { max-width: 800px; margin: 0 auto; }
+
+    /* NAV */
+    .nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      padding: 8px 10px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      position: sticky;
+      top: 8px;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
+    }
+    .nav-links { display: flex; gap: 6px; overflow: auto; scrollbar-width: none; flex: 1; min-width: 0; }
     .nav-links::-webkit-scrollbar { display: none; }
-    .nav-link { padding: 12px 18px; border-radius: 999px; text-decoration: none; font-weight: 600; transition: 0.25s ease; background: #f8fafc; color: #334155; white-space: nowrap; font-size: 0.92rem; display: inline-flex; align-items: center; gap: 8px; }
-    .nav-link.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; }
-    .nav-link.active .icon { filter: brightness(0) invert(1); }
-    .nav-link:hover:not(.active) { background: #eef2ff; color: var(--primary); }
-    .install-btn { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 12px 18px; border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 0.9rem; display: none; align-items: center; gap: 8px; }
+    .nav-link {
+      padding: 8px 13px;
+      border-radius: var(--r-pill);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      color: var(--text2);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .nav-link.active { background: var(--accent); color: #fff; box-shadow: var(--shadow-btn); }
+    .nav-link:hover:not(.active) { background: var(--surface2); color: var(--text); }
+    .nav-link i { font-size: 15px; }
+    .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border2);
+      background: var(--surface2);
+      color: var(--text2);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover { background: var(--accent-bg); color: var(--accent); }
+
+    .install-btn {
+      display: none;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: var(--r-pill);
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-btn);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
     .install-btn.show { display: inline-flex; }
-    .page-header { margin-bottom: 28px; }
-    .page-header h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); font-weight: 800; background: linear-gradient(135deg, #111827, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: flex; align-items: center; gap: 12px; }
-    .page-header p { color: var(--muted); margin-top: 8px; }
-    .form-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(18px); border-radius: 32px; padding: 32px; border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow); margin-bottom: 24px; }
-    .form-title { font-weight: 800; font-size: 1.3rem; margin-bottom: 24px; display: flex; align-items: center; gap: 12px; padding-bottom: 16px; border-bottom: 2px solid rgba(109,40,217,0.15); }
-    .edit-mode-badge { background: #fef3c7; color: #92400e; font-size: 0.72rem; padding: 6px 12px; border-radius: 999px; font-weight: 700; }
-    .appointment-form { display: flex; flex-direction: column; gap: 24px; }
-    .input-group { display: flex; flex-direction: column; gap: 10px; }
-    .input-group label { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.06em; display: flex; align-items: center; gap: 8px; }
-    .input-group input { width: 100%; padding: 16px 18px; border-radius: 20px; border: 1.5px solid var(--border); font-size: 1rem; font-family: inherit; background: #fff; transition: 0.25s ease; }
-    .input-group input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 5px rgba(139,92,246,0.15); }
-    .form-actions { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
-    .btn-primary { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; padding: 16px 28px; border-radius: 24px; font-weight: 800; cursor: pointer; font-size: 1rem; display: inline-flex; align-items: center; gap: 10px; flex: 1; justify-content: center; transition: 0.25s ease; }
-    .btn-secondary { background: #f1f5f9; color: #475569; border: 1px solid var(--border); padding: 16px 28px; border-radius: 24px; font-weight: 700; cursor: pointer; display: inline-flex; align-items: center; gap: 10px; flex: 1; justify-content: center; transition: 0.25s ease; }
-    .btn-primary:hover, .btn-secondary:hover { transform: translateY(-2px); }
-    .message-toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #1f2937; color: white; padding: 14px 24px; border-radius: 60px; font-weight: 600; font-size: 0.9rem; z-index: 1000; opacity: 0; transition: opacity 0.3s ease; pointer-events: none; white-space: nowrap; }
-    .message-toast.show { opacity: 1; }
-    @media (max-width: 640px) { .form-card { padding: 22px; } .form-actions { flex-direction: column; } .message-toast { white-space: normal; max-width: 90%; } }
+    .install-btn:hover { transform: translateY(-1px); }
+    .install-btn i { font-size: 14px; }
+
+    /* PAGE HEADER */
+    .page-header { margin-bottom: 20px; }
+    .page-header h1 {
+      font-size: clamp(1.4rem, 5vw, 2rem);
+      font-weight: 700;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      line-height: 1.2;
+    }
+    .page-header h1 i { font-size: clamp(1.2rem, 4vw, 1.6rem); color: var(--accent); }
+    .page-header p { color: var(--text2); margin-top: 6px; font-size: 0.875rem; }
+
+    /* FORM CARD */
+    .form-card {
+      background: var(--surface);
+      border-radius: var(--r);
+      padding: clamp(18px, 4vw, 32px);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-md);
+      margin-bottom: 20px;
+    }
+
+    .form-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      color: var(--text);
+      margin-bottom: 22px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border2);
+    }
+    .form-title i { font-size: 18px; color: var(--accent); }
+
+    .edit-badge {
+      background: var(--amber-bg);
+      color: var(--amber-text);
+      border: 1px solid var(--amber-border);
+      font-size: 0.7rem;
+      padding: 4px 10px;
+      border-radius: var(--r-pill);
+      font-weight: 600;
+      display: none;
+      align-items: center;
+      gap: 4px;
+    }
+    .edit-badge.show { display: inline-flex; }
+    .edit-badge i { font-size: 12px; }
+
+    /* FORM FIELDS */
+    .appointment-form { display: flex; flex-direction: column; gap: 18px; }
+
+    .input-group { display: flex; flex-direction: column; gap: 7px; }
+    .input-group label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text3);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .input-group label i { font-size: 14px; }
+
+    .input-group input {
+      width: 100%;
+      padding: 13px 16px;
+      border-radius: var(--r-sm);
+      border: 1px solid var(--border2);
+      font-size: 0.95rem;
+      font-family: inherit;
+      background: var(--surface2);
+      color: var(--text);
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+      outline: none;
+    }
+    .input-group input:focus {
+      border-color: var(--accent2);
+      background: var(--surface);
+      box-shadow: 0 0 0 3px rgba(139,92,246,0.15), var(--shadow-sm);
+    }
+    .input-group input::placeholder { color: var(--text3); }
+
+    /* INPUT ROWS — two per line on wider screens */
+    .input-row { display: grid; grid-template-columns: 1fr; gap: 18px; }
+    @media (min-width: 520px) { .input-row { grid-template-columns: 1fr 1fr; } }
+
+    /* FORM ACTIONS */
+    .form-actions { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+    @media (max-width: 480px) { .form-actions { flex-direction: column; } }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 13px 24px;
+      border-radius: var(--r-pill);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-btn);
+    }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-primary:active { transform: scale(0.98); }
+    .btn-primary i { font-size: 17px; }
+
+    .btn-secondary {
+      background: var(--surface2);
+      color: var(--text2);
+      border: 1px solid var(--border2);
+      padding: 13px 24px;
+      border-radius: var(--r-pill);
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      flex: 1;
+      transition: all 0.2s;
+      box-shadow: var(--shadow-sm);
+    }
+    .btn-secondary:hover { background: var(--surface3); color: var(--text); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .btn-secondary:active { transform: scale(0.98); }
+    .btn-secondary i { font-size: 17px; }
+
+    /* TOAST */
+    .toast {
+      position: fixed;
+      bottom: 28px;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border2);
+      padding: 12px 22px;
+      border-radius: var(--r-pill);
+      font-weight: 600;
+      font-size: 0.875rem;
+      z-index: 1000;
+      opacity: 0;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      pointer-events: none;
+      white-space: nowrap;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .toast i { font-size: 16px; }
+    .toast.success { border-color: var(--green-border); }
+    .toast.success i { color: var(--green-text); }
+    .toast.error { border-color: var(--red-border); }
+    .toast.error i { color: var(--red-text); }
+
+    @media (max-width: 480px) {
+      .toast { white-space: normal; max-width: 88%; text-align: center; }
+    }
   </style>
 </head>
 <body>
-<div class="app-container">
-  <div class="nav-bar">
+<div class="app" id="app">
+
+  <!-- NAV -->
+  <nav class="nav">
     <div class="nav-links">
-      <a href="index.html" class="nav-link"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>Appointments</a>
-      <a href="reports.html" class="nav-link"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>Yearly Reports</a>
-      <a href="add.html" class="nav-link active"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add New</a>
+      <a href="index.html" class="nav-link">
+        <i class="ti ti-calendar-event" aria-hidden="true"></i><span>Appointments</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i><span>Reports</span>
+      </a>
+      <a href="add.html" class="nav-link active">
+        <i class="ti ti-plus" aria-hidden="true"></i><span>Add new</span>
+      </a>
     </div>
-    <button id="installBtn" class="install-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Install App</button>
-  </div>
+    <div class="nav-right">
+      <button id="installBtn" class="install-btn" aria-label="Install app">
+        <i class="ti ti-download" aria-hidden="true"></i><span>Install</span>
+      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <i class="ti ti-moon" id="themeIcon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- PAGE HEADER -->
   <div class="page-header">
-    <h1><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg><span id="pageTitle">Add New Appointment</span></h1>
-    <p>Fill in the details below to schedule a new service appointment</p>
+    <h1>
+      <i class="ti ti-calendar-plus" aria-hidden="true"></i>
+      <span id="pageTitle">Add new appointment</span>
+    </h1>
+    <p id="pageSubtitle">Fill in the details below to schedule a new service appointment</p>
   </div>
+
+  <!-- FORM CARD -->
   <div class="form-card">
-    <div class="form-title"><span>Appointment Information</span><span id="editModeChip" class="edit-mode-badge" style="display:none;">✏️ Editing Mode</span></div>
-    <form id="appointmentForm" class="appointment-form">
-      <div class="input-group">
-        <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Customer Name *</label>
-        <input type="text" id="name" placeholder="Enter full name" required autocomplete="off">
+    <div class="form-title">
+      <i class="ti ti-clipboard-list" aria-hidden="true"></i>
+      <span>Appointment information</span>
+      <span id="editBadge" class="edit-badge">
+        <i class="ti ti-pencil" aria-hidden="true"></i>Editing
+      </span>
+    </div>
+
+    <form id="appointmentForm" class="appointment-form" novalidate>
+
+      <div class="input-row">
+        <div class="input-group">
+          <label for="name"><i class="ti ti-user" aria-hidden="true"></i>Customer name *</label>
+          <input type="text" id="name" placeholder="Enter full name" required autocomplete="off">
+        </div>
+        <div class="input-group">
+          <label for="phone"><i class="ti ti-phone" aria-hidden="true"></i>Contact number *</label>
+          <input type="tel" id="phone" placeholder="Phone number" required autocomplete="off">
+        </div>
       </div>
+
       <div class="input-group">
-        <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>Contact Number *</label>
-        <input type="text" id="phone" placeholder="Phone number" required autocomplete="off">
+        <label for="serviceType"><i class="ti ti-tool" aria-hidden="true"></i>Service offered *</label>
+        <input type="text" id="serviceType" placeholder="e.g. Haircut, Massage, Facial…" required autocomplete="off">
       </div>
-      <div class="input-group">
-        <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>Service Offered *</label>
-        <input type="text" id="serviceType" placeholder="Type the service (e.g., Haircut, Massage, Facial)" required autocomplete="off">
+
+      <div class="input-row">
+        <div class="input-group">
+          <label for="datetime"><i class="ti ti-calendar-event" aria-hidden="true"></i>Date & time *</label>
+          <input type="datetime-local" id="datetime" required>
+        </div>
+        <div class="input-group">
+          <label for="amount"><i class="ti ti-currency-dollar" aria-hidden="true"></i>Price (ZMW) *</label>
+          <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
+        </div>
       </div>
-      <div class="input-group">
-        <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Date & Time *</label>
-        <input type="datetime-local" id="datetime" required>
-      </div>
-      <div class="input-group">
-        <label><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Price (ZMW) *</label>
-        <input type="number" id="amount" placeholder="0.00" step="0.01" required>
-      </div>
+
       <div class="form-actions">
-        <button type="submit" class="btn-primary" id="submitBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg><span id="submitBtnText">Save Appointment</span></button>
-        <button type="button" class="btn-secondary" id="cancelBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>Cancel</button>
+        <button type="submit" class="btn-primary" id="submitBtn">
+          <i class="ti ti-device-floppy" aria-hidden="true"></i>
+          <span id="submitBtnText">Save appointment</span>
+        </button>
+        <button type="button" class="btn-secondary" id="cancelBtn">
+          <i class="ti ti-x" aria-hidden="true"></i>
+          Cancel
+        </button>
       </div>
+
     </form>
   </div>
+
 </div>
-<div id="toastMessage" class="message-toast"></div>
+
+<!-- TOAST -->
+<div id="toast" class="toast" role="alert" aria-live="polite">
+  <i class="ti" id="toastIcon" aria-hidden="true"></i>
+  <span id="toastMsg"></span>
+</div>
+
 <script>
-  // Add/Edit page logic - service field now plain text input only
   let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
   let editId = null;
   let deferredPrompt;
 
-  function showToast(msg, isError=false) { 
-    let toast = document.getElementById("toastMessage"); 
-    toast.textContent = msg; 
-    toast.style.background = isError ? "#dc2626" : "#1f2937"; 
-    toast.classList.add("show"); 
-    setTimeout(() => toast.classList.remove("show"), 2500); 
+  // THEME
+  const themeToggle = document.getElementById("themeToggle");
+  const themeIcon = document.getElementById("themeIcon");
+  let dark = localStorage.getItem("sf_theme") === "dark";
+
+  function applyTheme() {
+    document.body.setAttribute("data-theme", dark ? "dark" : "light");
+    document.getElementById("app").setAttribute("data-theme", dark ? "dark" : "light");
+    themeIcon.className = dark ? "ti ti-sun" : "ti ti-moon";
+  }
+  themeToggle.addEventListener("click", () => {
+    dark = !dark;
+    localStorage.setItem("sf_theme", dark ? "dark" : "light");
+    applyTheme();
+  });
+  applyTheme();
+
+  // TOAST
+  function showToast(msg, type = "success") {
+    const toast = document.getElementById("toast");
+    const toastMsg = document.getElementById("toastMsg");
+    const toastIcon = document.getElementById("toastIcon");
+    toastMsg.textContent = msg;
+    toast.className = "toast " + type;
+    toastIcon.className = "ti " + (type === "success" ? "ti-circle-check" : "ti-alert-circle");
+    toast.classList.add("show");
+    setTimeout(() => toast.classList.remove("show"), 2600);
   }
 
-  function setDefaultDateTime() { 
-    let dt = new Date(); 
-    dt.setHours(dt.getHours() + 1); 
-    dt.setMinutes(0, 0, 0); 
-    document.getElementById("datetime").value = dt.toISOString().slice(0, 16); 
+  // DEFAULT DATE/TIME
+  function setDefaultDateTime() {
+    let dt = new Date();
+    dt.setHours(dt.getHours() + 1);
+    dt.setMinutes(0, 0, 0);
+    document.getElementById("datetime").value = dt.toISOString().slice(0, 16);
   }
 
-  function loadEditData() { 
-    let params = new URLSearchParams(window.location.search), editParam = params.get('edit'); 
-    if(editParam){ 
-      editId = parseInt(editParam); 
-      let appt = appointments.find(a => a.id === editId); 
-      if(appt){ 
-        document.getElementById("name").value = appt.name; 
-        document.getElementById("phone").value = appt.phone; 
-        document.getElementById("serviceType").value = appt.service; 
-        document.getElementById("datetime").value = appt.datetime; 
-        document.getElementById("amount").value = appt.amount; 
-        document.getElementById("pageTitle").textContent = "Edit Appointment"; 
-        document.getElementById("submitBtnText").textContent = "Update Appointment"; 
-        document.getElementById("editModeChip").style.display = "inline-block"; 
-        return; 
-      } 
-    } 
-    editId = null; 
-    setDefaultDateTime(); 
+  // LOAD EDIT DATA
+  function loadEditData() {
+    let params = new URLSearchParams(window.location.search);
+    let editParam = params.get('edit');
+    if (editParam) {
+      editId = parseInt(editParam);
+      let appt = appointments.find(a => a.id === editId);
+      if (appt) {
+        document.getElementById("name").value = appt.name;
+        document.getElementById("phone").value = appt.phone;
+        document.getElementById("serviceType").value = appt.service;
+        document.getElementById("datetime").value = appt.datetime;
+        document.getElementById("amount").value = appt.amount;
+        document.getElementById("pageTitle").textContent = "Edit appointment";
+        document.getElementById("pageSubtitle").textContent = "Update the details below and save your changes";
+        document.querySelector(".page-header h1 i").className = "ti ti-edit";
+        document.getElementById("submitBtnText").textContent = "Update appointment";
+        document.getElementById("editBadge").classList.add("show");
+        return;
+      }
+    }
+    editId = null;
+    setDefaultDateTime();
   }
 
-  function saveAppointment(e){ 
-    e.preventDefault(); 
-    let name = document.getElementById("name").value.trim(); 
-    let phone = document.getElementById("phone").value.trim(); 
-    let service = document.getElementById("serviceType").value.trim(); 
-    let datetime = document.getElementById("datetime").value; 
-    let amount = parseFloat(document.getElementById("amount").value); 
-    
-    if(!name || !phone || !service || !datetime || isNaN(amount) || amount <= 0){ 
-      showToast("Please fill all fields correctly", true); 
-      return; 
-    } 
-    
-    if(editId){ 
-      let idx = appointments.findIndex(a => a.id === editId); 
-      if(idx !== -1){ 
-        appointments[idx] = {...appointments[idx], name, phone, service, datetime, amount}; 
-        localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments)); 
-        showToast("Appointment updated!"); 
-        setTimeout(() => window.location.href = "index.html", 800); 
-      } 
-    } else { 
-      let newAppt = { 
-        id: Date.now(), 
-        name, 
-        phone, 
-        service, 
-        datetime, 
-        amount, 
-        completed: false, 
-        createdAt: new Date().toISOString() 
-      }; 
-      appointments.push(newAppt); 
-      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments)); 
-      showToast("Appointment saved!"); 
-      document.getElementById("appointmentForm").reset(); 
-      setDefaultDateTime(); 
-      document.getElementById("name").focus(); 
-    } 
+  // SAVE / UPDATE
+  function saveAppointment(e) {
+    e.preventDefault();
+    let name = document.getElementById("name").value.trim();
+    let phone = document.getElementById("phone").value.trim();
+    let service = document.getElementById("serviceType").value.trim();
+    let datetime = document.getElementById("datetime").value;
+    let amount = parseFloat(document.getElementById("amount").value);
+
+    if (!name || !phone || !service || !datetime || isNaN(amount) || amount <= 0) {
+      showToast("Please fill all fields correctly", "error");
+      return;
+    }
+
+    if (editId) {
+      let idx = appointments.findIndex(a => a.id === editId);
+      if (idx !== -1) {
+        appointments[idx] = { ...appointments[idx], name, phone, service, datetime, amount };
+        localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+        showToast("Appointment updated!");
+        setTimeout(() => window.location.href = "index.html", 900);
+      }
+    } else {
+      let newAppt = {
+        id: Date.now(),
+        name, phone, service, datetime, amount,
+        completed: false,
+        createdAt: new Date().toISOString()
+      };
+      appointments.push(newAppt);
+      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+      showToast("Appointment saved!");
+      document.getElementById("appointmentForm").reset();
+      setDefaultDateTime();
+      document.getElementById("name").focus();
+    }
   }
 
-  function cancelForm(){ 
-    if(editId){ 
-      if(confirm("Cancel editing?")) window.location.href = "index.html"; 
-    } else { 
-      let name = document.getElementById("name").value.trim(); 
-      if(name && confirm("Cancel? Data will be lost.")) window.location.href = "index.html"; 
-      else if(!name) window.location.href = "index.html"; 
-    } 
+  // CANCEL
+  function cancelForm() {
+    if (editId) {
+      if (confirm("Cancel editing? Changes will be lost.")) window.location.href = "index.html";
+    } else {
+      let name = document.getElementById("name").value.trim();
+      if (name && confirm("Cancel? Data will be lost.")) window.location.href = "index.html";
+      else if (!name) window.location.href = "index.html";
+    }
   }
 
   document.getElementById("appointmentForm").addEventListener("submit", saveAppointment);
   document.getElementById("cancelBtn").addEventListener("click", cancelForm);
 
-  window.addEventListener('beforeinstallprompt', (e) => { 
-    e.preventDefault(); 
-    deferredPrompt = e; 
-    document.getElementById('installBtn').classList.add('show'); 
+  // PWA INSTALL
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBtn').classList.add('show');
   });
-  
-  document.getElementById('installBtn').addEventListener('click', async () => { 
-    if(deferredPrompt){ 
-      deferredPrompt.prompt(); 
-      await deferredPrompt.userChoice; 
-      deferredPrompt = null; 
-      document.getElementById('installBtn').classList.remove('show'); 
-    } 
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('installBtn').classList.remove('show');
+    }
   });
-  
+
   loadEditData();
 </script>
 </body>
