@@ -7,178 +7,664 @@
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#6d28d9">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
     :root {
-      --bg: #f5f7ff; --card: #ffffff; --primary: #6d28d9; --primary-dark: #5b21b6;
-      --secondary: #8b5cf6; --text: #0f172a; --muted: #64748b; --border: #e2e8f0;
-      --success: #16a34a; --danger: #dc2626; --warning: #f59e0b;
-      --shadow: 0 10px 30px rgba(15,23,42,0.06); --radius: 24px;
+      --bg: #f0eeff;
+      --surface: #ffffff;
+      --surface2: #f7f5ff;
+      --surface3: #edeafc;
+      --text: #1a1333;
+      --text2: #5c5478;
+      --text3: #9b93b8;
+      --border: rgba(109,40,217,0.12);
+      --border2: rgba(109,40,217,0.22);
+      --accent: #6d28d9;
+      --accent2: #8b5cf6;
+      --accent-bg: #ede9fe;
+      --accent-text: #4c1d95;
+      --green-bg: #dcfce7;
+      --green-text: #14532d;
+      --green-border: rgba(22,163,74,0.25);
+      --amber-bg: #fef9c3;
+      --amber-text: #713f12;
+      --amber-border: rgba(202,138,4,0.25);
+      --red-bg: #fee2e2;
+      --red-text: #7f1d1d;
+      --red-border: rgba(220,38,38,0.2);
+      --blue-bg: #dbeafe;
+      --blue-text: #1e3a5f;
+      --blue-border: rgba(37,99,235,0.2);
+      --shadow-sm: 0 1px 4px rgba(109,40,217,0.08), 0 2px 8px rgba(109,40,217,0.06);
+      --shadow-md: 0 4px 12px rgba(109,40,217,0.10), 0 2px 6px rgba(109,40,217,0.08);
+      --shadow-lg: 0 8px 24px rgba(109,40,217,0.13), 0 3px 8px rgba(109,40,217,0.09);
+      --shadow-btn: 0 2px 6px rgba(109,40,217,0.18), 0 1px 3px rgba(109,40,217,0.12);
+      --r: 14px;
+      --r-sm: 9px;
+      --r-pill: 999px;
     }
+
+    [data-theme="dark"] {
+      --bg: #0f0c1a;
+      --surface: #1c1729;
+      --surface2: #241e35;
+      --surface3: #2d2645;
+      --text: #f0ecff;
+      --text2: #a899cc;
+      --text3: #5e5478;
+      --border: rgba(139,92,246,0.15);
+      --border2: rgba(139,92,246,0.28);
+      --accent: #a78bfa;
+      --accent2: #c4b5fd;
+      --accent-bg: #2d1f5e;
+      --accent-text: #ddd6fe;
+      --green-bg: #14532d;
+      --green-text: #bbf7d0;
+      --green-border: rgba(74,222,128,0.2);
+      --amber-bg: #451a03;
+      --amber-text: #fde68a;
+      --amber-border: rgba(251,191,36,0.2);
+      --red-bg: #450a0a;
+      --red-text: #fecaca;
+      --red-border: rgba(248,113,113,0.2);
+      --blue-bg: #1e3a5f;
+      --blue-text: #bfdbfe;
+      --blue-border: rgba(96,165,250,0.2);
+      --shadow-sm: 0 1px 4px rgba(0,0,0,0.35), 0 2px 8px rgba(0,0,0,0.25);
+      --shadow-md: 0 4px 12px rgba(0,0,0,0.4), 0 2px 6px rgba(0,0,0,0.3);
+      --shadow-lg: 0 8px 24px rgba(0,0,0,0.5), 0 3px 8px rgba(0,0,0,0.35);
+      --shadow-btn: 0 2px 6px rgba(0,0,0,0.4), 0 1px 3px rgba(0,0,0,0.3);
+    }
+
     body {
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      background: radial-gradient(circle at top right, #ede9fe 0%, transparent 30%),
-                  radial-gradient(circle at bottom left, #dbeafe 0%, transparent 35%),
-                  var(--bg);
-      color: var(--text); min-height: 100vh; padding: 18px;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 12px;
+      transition: background 0.25s, color 0.25s;
     }
-    .app-container { max-width: 1440px; margin: 0 auto; }
-    .icon { width: 18px; height: 18px; display: inline-flex; align-items: center; justify-content: center; margin-right: 4px; vertical-align: middle; }
-    .icon-white { filter: brightness(0) invert(1); }
-    .nav-bar {
-      background: rgba(255,255,255,0.8); backdrop-filter: blur(16px);
-      border: 1px solid rgba(255,255,255,0.4); border-radius: 999px;
-      padding: 10px 14px; margin-bottom: 22px; display: flex;
-      justify-content: space-between; align-items: center; gap: 14px;
-      box-shadow: var(--shadow); position: sticky; top: 12px; z-index: 100;
+
+    .app { max-width: 1400px; margin: 0 auto; }
+
+    /* NAV */
+    .nav {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-pill);
+      padding: 8px 10px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      position: sticky;
+      top: 8px;
+      z-index: 100;
+      box-shadow: var(--shadow-md);
     }
-    .nav-links { display: flex; gap: 10px; overflow: auto; scrollbar-width: none; }
+    .nav-links { display: flex; gap: 6px; overflow: auto; scrollbar-width: none; flex: 1; min-width: 0; }
     .nav-links::-webkit-scrollbar { display: none; }
     .nav-link {
-      padding: 12px 18px; border-radius: 999px; text-decoration: none;
-      font-weight: 600; transition: 0.25s ease; background: #f8fafc;
-      color: #334155; white-space: nowrap; font-size: 0.92rem;
-      display: inline-flex; align-items: center; gap: 8px;
+      padding: 8px 13px;
+      border-radius: var(--r-pill);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      white-space: nowrap;
+      color: var(--text2);
+      border: 1px solid transparent;
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
-    .nav-link.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; box-shadow: 0 8px 20px rgba(109,40,217,0.28); }
-    .nav-link.active .icon { filter: brightness(0) invert(1); }
-    .nav-link:hover:not(.active) { background: #eef2ff; color: var(--primary); }
+    .nav-link.active { background: var(--accent); color: #fff; box-shadow: var(--shadow-btn); }
+    .nav-link:hover:not(.active) { background: var(--surface2); color: var(--text); }
+    .nav-link i { font-size: 15px; }
+    .nav-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+    .theme-toggle {
+      width: 36px; height: 36px;
+      border-radius: var(--r-pill);
+      border: 1px solid var(--border2);
+      background: var(--surface2);
+      color: var(--text2);
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 17px;
+      box-shadow: var(--shadow-sm);
+      transition: all 0.2s;
+      flex-shrink: 0;
+    }
+    .theme-toggle:hover { background: var(--accent-bg); color: var(--accent); }
+
+    /* HEADER */
+    .header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .brand h1 { font-size: clamp(1.3rem, 5vw, 1.9rem); font-weight: 700; color: var(--text); line-height: 1.2; }
+    .brand p { color: var(--text2); margin-top: 5px; font-size: 0.82rem; }
+    .header-stats { display: flex; gap: 8px; flex-wrap: wrap; }
+    .stat-badge {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 10px 14px;
+      border-radius: var(--r);
+      min-width: 80px;
+      box-shadow: var(--shadow-sm);
+    }
+    .stat-label { display: block; font-size: 0.67rem; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); font-weight: 600; margin-bottom: 3px; }
+    .stat-number { font-size: 1.4rem; font-weight: 700; color: var(--text); }
+
+    /* KPI GRID */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    @media (min-width: 640px) { .kpi-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      padding: 14px;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .kpi-card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .kpi-icon {
+      width: 32px; height: 32px;
+      border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 10px;
+      font-size: 17px;
+    }
+    .ki-p { background: var(--accent-bg); color: var(--accent); }
+    .ki-b { background: var(--blue-bg); color: var(--blue-text); }
+    .ki-g { background: var(--green-bg); color: var(--green-text); }
+    .ki-a { background: var(--amber-bg); color: var(--amber-text); }
+    .kpi-label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); font-weight: 600; margin-bottom: 4px; }
+    .kpi-value { font-size: clamp(1.1rem, 3vw, 1.4rem); font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .kpi-sub { font-size: 0.74rem; margin-top: 5px; color: var(--text3); display: flex; align-items: center; gap: 3px; }
+    .kpi-sub i { font-size: 12px; }
+
+    /* ACTION BAR */
+    .action-bar { display: flex; flex-direction: column; gap: 10px; margin-bottom: 16px; }
+    @media (min-width: 600px) { .action-bar { flex-direction: row; align-items: center; } }
+    .search-wrapper { position: relative; flex: 1; }
+    .search-wrapper i.search-ic { position: absolute; left: 13px; top: 50%; transform: translateY(-50%); font-size: 16px; color: var(--text3); pointer-events: none; }
+    .search-wrapper input {
+      width: 100%;
+      padding: 11px 13px 11px 38px;
+      border-radius: var(--r-pill);
+      font-size: 0.875rem;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      box-shadow: var(--shadow-sm);
+      outline: none;
+      transition: all 0.2s;
+    }
+    .search-wrapper input:focus { border-color: var(--accent2); box-shadow: 0 0 0 3px rgba(139,92,246,0.15), var(--shadow-sm); }
+    .search-wrapper input::placeholder { color: var(--text3); }
+    .filter-group { display: flex; gap: 7px; flex-wrap: wrap; }
+    .filter-chip {
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      padding: 8px 14px;
+      border-radius: var(--r-pill);
+      font-size: 0.79rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      color: var(--text2);
+      display: flex; align-items: center; gap: 5px;
+      box-shadow: var(--shadow-sm);
+    }
+    .filter-chip.active { background: var(--accent); color: #fff; border-color: transparent; box-shadow: var(--shadow-btn); }
+    .filter-chip:hover:not(.active) { background: var(--surface2); color: var(--text); }
+    .filter-chip i { font-size: 13px; }
+
+    /* CARDS GRID */
+    .cards-grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+    @media (min-width: 700px) { .cards-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); } }
+
+    .appt-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r);
+      overflow: hidden;
+      transition: all 0.22s ease;
+      box-shadow: var(--shadow-sm);
+    }
+    .appt-card:hover { box-shadow: var(--shadow-lg); border-color: var(--border2); transform: translateY(-2px); }
+    .appt-card.done { background: var(--green-bg); border-color: var(--green-border); }
+
+    .card-header { padding: 16px 18px; cursor: pointer; transition: background 0.15s; }
+    .card-header:hover { background: var(--surface2); }
+
+    .name-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+    .cust-name { font-size: 1rem; font-weight: 600; color: var(--text); display: flex; align-items: center; gap: 7px; }
+    .expand-i { font-size: 13px; color: var(--text3); transition: transform 0.22s; display: inline-block; }
+    .expand-i.open { transform: rotate(90deg); }
+
+    .sbadge { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: var(--r-pill); font-size: 0.68rem; font-weight: 600; }
+    .s-done { background: var(--green-bg); color: var(--green-text); border: 1px solid var(--green-border); }
+    .s-pend { background: var(--amber-bg); color: var(--amber-text); border: 1px solid var(--amber-border); }
+
+    .card-preview { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.8rem; color: var(--text2); }
+    .prev-item { display: inline-flex; align-items: center; gap: 4px; }
+    .prev-item i { font-size: 13px; color: var(--text3); }
+
+    /* CARD DETAILS */
+    .card-details { padding: 0 18px 18px; border-top: 1px solid var(--border); animation: fd 0.2s ease; }
+    @keyframes fd { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+
+    .details-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin-top: 14px; }
+    .d-item { border-radius: var(--r-sm); padding: 10px 12px; background: var(--surface2); border: 1px solid var(--border); }
+    .d-label { font-size: 0.64rem; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; color: var(--text3); margin-bottom: 4px; display: flex; align-items: center; gap: 4px; }
+    .d-label i { font-size: 12px; }
+    .d-val { font-weight: 600; font-size: 0.875rem; color: var(--text); }
+    .d-val.amt { color: var(--accent); font-size: 1rem; }
+
+    /* ACTION BUTTONS */
+    .act-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .abtn {
+      border: 1px solid;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--r-pill);
+      cursor: pointer;
+      transition: all 0.18s;
+      display: inline-flex; align-items: center; gap: 5px;
+      box-shadow: var(--shadow-btn);
+    }
+    .abtn i { font-size: 13px; }
+    .abtn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .abtn:active { transform: scale(0.97); }
+    .ab-edit { color: var(--blue-text); border-color: var(--blue-border); background: var(--blue-bg); }
+    .ab-del { color: var(--red-text); border-color: var(--red-border); background: var(--red-bg); }
+    .ab-done { color: var(--green-text); border-color: var(--green-border); background: var(--green-bg); }
+
+    /* EMPTY STATE */
+    .empty-state { text-align: center; padding: 50px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--r); box-shadow: var(--shadow-sm); }
+    .empty-icon { font-size: 36px; color: var(--text3); margin-bottom: 10px; }
+    .empty-state h3 { font-size: 1rem; font-weight: 600; margin-bottom: 5px; color: var(--text); }
+    .empty-state p { color: var(--text2); font-size: 0.83rem; }
+
+    /* FAB */
+    .fab-wrap { display: flex; justify-content: flex-end; margin-top: 20px; padding-bottom: 8px; }
+    .fab {
+      background: var(--accent);
+      color: #fff;
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      border: none;
+      font-size: 22px;
+      box-shadow: var(--shadow-lg), 0 4px 14px rgba(109,40,217,0.35);
+      transition: all 0.2s;
+    }
+    .fab:hover { transform: scale(1.08); box-shadow: 0 8px 28px rgba(109,40,217,0.4); }
+    .fab:active { transform: scale(0.96); }
+
+    /* INSTALL BUTTON */
     .install-btn {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
-      color: white; border: none; padding: 12px 18px; border-radius: 999px;
-      cursor: pointer; font-weight: 700; font-size: 0.9rem; display: none;
-      box-shadow: 0 8px 18px rgba(109,40,217,0.25); transition: 0.25s ease;
-      align-items: center; gap: 8px;
+      display: none;
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: var(--r-pill);
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 600;
+      align-items: center;
+      gap: 6px;
+      box-shadow: var(--shadow-btn);
+      transition: all 0.2s;
+      flex-shrink: 0;
     }
     .install-btn.show { display: inline-flex; }
-    .install-btn:hover { transform: translateY(-1px); }
-    .dashboard-header { display: flex; justify-content: space-between; align-items: center; gap: 18px; margin-bottom: 24px; flex-wrap: wrap; }
-    .brand h1 { font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; line-height: 1.1; background: linear-gradient(135deg, #111827, #7c3aed); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .brand p { color: var(--muted); margin-top: 8px; font-size: 0.95rem; }
-    .header-stats { display: flex; gap: 14px; flex-wrap: wrap; }
-    .stat-badge { background: rgba(255,255,255,0.8); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.6); padding: 14px 18px; border-radius: 22px; min-width: 120px; box-shadow: var(--shadow); }
-    .stat-label { display: block; font-size: 0.72rem; text-transform: uppercase; color: var(--muted); font-weight: 700; letter-spacing: 0.08em; margin-bottom: 4px; }
-    .stat-number { font-size: 1.6rem; font-weight: 900; color: var(--text); }
-    .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; margin-bottom: 28px; }
-    .kpi-card { background: rgba(255,255,255,0.82); backdrop-filter: blur(14px); border-radius: var(--radius); padding: 22px; border: 1px solid rgba(255,255,255,0.5); box-shadow: var(--shadow); transition: 0.25s ease; }
-    .kpi-card:hover { transform: translateY(-4px); }
-    .kpi-title { font-size: 0.78rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
-    .kpi-value { font-size: 2.2rem; font-weight: 900; line-height: 1.1; color: var(--text); }
-    .kpi-sub { font-size: 0.82rem; margin-top: 10px; color: var(--success); font-weight: 600; }
-    .action-bar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 28px; }
-    .search-wrapper { flex: 1; min-width: 240px; }
-    .search-wrapper input { width: 100%; padding: 16px 18px; border-radius: 999px; border: 1px solid var(--border); font-size: 0.92rem; background: white; box-shadow: var(--shadow); }
-    .search-wrapper input:focus { outline: none; border-color: var(--secondary); box-shadow: 0 0 0 5px rgba(139,92,246,0.12); }
-    .filter-group { display: flex; gap: 10px; flex-wrap: wrap; }
-    .filter-chip { background: white; border: 1px solid var(--border); padding: 10px 18px; border-radius: 999px; font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: 0.25s ease; }
-    .filter-chip.active { background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border-color: transparent; box-shadow: 0 8px 18px rgba(109,40,217,0.22); }
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
-    .appointment-card { background: rgba(255,255,255,0.92); backdrop-filter: blur(8px); border-radius: 28px; border: 1px solid rgba(255,255,255,0.6); box-shadow: var(--shadow); transition: all 0.25s ease; overflow: hidden; }
-    .appointment-card:hover { transform: translateY(-3px); box-shadow: 0 20px 35px rgba(15,23,42,0.12); }
-    .card-header { padding: 20px 22px; cursor: pointer; background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(248,245,255,0.5)); border-bottom: 1px solid rgba(109,40,217,0.08); transition: background 0.2s; }
-    .card-header:hover { background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(237,233,254,0.6)); }
-    .customer-name-row { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-    .customer-name { font-size: 1.35rem; font-weight: 800; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
-    .expand-icon { font-size: 0.9rem; transition: transform 0.25s ease; display: inline-block; color: var(--primary); }
-    .expand-icon.rotated { transform: rotate(90deg); }
-    .status-badge-card { display: inline-flex; align-items: center; gap: 6px; padding: 5px 12px; border-radius: 40px; font-size: 0.7rem; font-weight: 800; }
-    .status-completed-card { background: #dcfce7; color: #166534; }
-    .status-pending-card { background: #fef3c7; color: #92400e; }
-    .card-preview { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 8px; font-size: 0.85rem; color: var(--muted); }
-    .preview-item { display: inline-flex; align-items: center; gap: 6px; }
-    .card-details { padding: 0 22px 22px 22px; background: #fefcff; border-top: 1px solid rgba(139,92,246,0.12); animation: fadeSlideDown 0.25s ease; }
-    @keyframes fadeSlideDown { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
-    .details-grid-card { display: flex; flex-wrap: wrap; gap: 18px; margin-top: 18px; }
-    .detail-card-item { flex: 1; min-width: 150px; border-radius: 20px; padding: 12px 16px; background: #f9f6fe; }
-    .detail-label-card { font-size: 0.68rem; font-weight: 800; text-transform: uppercase; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
-    .detail-value-card { font-weight: 700; font-size: 0.95rem; color: var(--text); }
-    .amount-value { color: var(--primary); font-size: 1.2rem; font-weight: 800; }
-    .action-buttons-card { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; padding-top: 6px; border-top: 1px solid #e9e4f5; }
-    .card-action-btn { border: none; font-size: 0.75rem; font-weight: 800; padding: 10px 18px; border-radius: 40px; cursor: pointer; transition: 0.2s ease; display: inline-flex; align-items: center; gap: 6px; }
-    .card-edit { background: #eef2ff; color: #4338ca; }
-    .card-delete { background: #fee2e2; color: #b91c1c; }
-    .card-complete { background: #dcfce7; color: #166534; }
-    .card-action-btn:hover { transform: translateY(-2px); filter: brightness(0.97); }
-    .empty-state { text-align: center; padding: 70px 24px; background: rgba(255,255,255,0.7); backdrop-filter: blur(12px); border-radius: 40px; margin-top: 20px; }
-    .fab-add { position: fixed; bottom: 30px; right: 30px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; width: 60px; height: 60px; border-radius: 30px; display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 8px 20px rgba(109,40,217,0.4); transition: all 0.25s ease; z-index: 99; border: none; }
-    .fab-add:hover { transform: scale(1.08); }
-    @media (max-width: 680px) { .cards-grid { grid-template-columns: 1fr; } .fab-add { bottom: 20px; right: 20px; width: 52px; height: 52px; } }
+    .install-btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-md); }
+    .install-btn i { font-size: 14px; }
   </style>
 </head>
 <body>
-<div class="app-container">
-  <div class="nav-bar">
+<div class="app" id="app">
+
+  <!-- NAV -->
+  <nav class="nav">
     <div class="nav-links">
-      <a href="index.html" class="nav-link active"><svg class="icon icon-white" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>Appointments</a>
-      <a href="reports.html" class="nav-link"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12v6a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>Yearly Reports</a>
-      <a href="add.html" class="nav-link"><svg class="icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>Add New</a>
+      <a href="index.html" class="nav-link active">
+        <i class="ti ti-calendar-event" aria-hidden="true"></i><span>Appointments</span>
+      </a>
+      <a href="reports.html" class="nav-link">
+        <i class="ti ti-chart-bar" aria-hidden="true"></i><span>Reports</span>
+      </a>
+      <a href="add.html" class="nav-link">
+        <i class="ti ti-plus" aria-hidden="true"></i><span>Add new</span>
+      </a>
     </div>
-    <button id="installBtn" class="install-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Install App</button>
+    <div class="nav-right">
+      <button id="installBtn" class="install-btn" aria-label="Install app">
+        <i class="ti ti-download" aria-hidden="true"></i><span>Install</span>
+      </button>
+      <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">
+        <i class="ti ti-moon" id="themeIcon" aria-hidden="true"></i>
+      </button>
+    </div>
+  </nav>
+
+  <!-- HEADER -->
+  <div class="header-row">
+    <div class="brand">
+      <h1>ServiceFlow</h1>
+      <p>Smart appointment tracking · Revenue insights</p>
+    </div>
+    <div class="header-stats">
+      <div class="stat-badge">
+        <span class="stat-label">Today</span>
+        <span class="stat-number" id="todayCount">0</span>
+      </div>
+      <div class="stat-badge">
+        <span class="stat-label">Pending</span>
+        <span class="stat-number" id="pendingCount">0</span>
+      </div>
+    </div>
   </div>
-  <div class="dashboard-header"><div class="brand"><h1>ServiceFlow Dashboard</h1><p>Smart appointment tracking · Revenue insights</p></div><div class="header-stats"><div class="stat-badge"><span class="stat-label">Today</span><span class="stat-number" id="todayCount">0</span></div><div class="stat-badge"><span class="stat-label">Pending</span><span class="stat-number" id="pendingCount">0</span></div></div></div>
-  <div class="kpi-grid"><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>Total Revenue</div><div class="kpi-value" id="totalCollectedKpi">ZMW 0</div><div class="kpi-sub">completed appointments</div></div><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Active</div><div class="kpi-value" id="activeAppointmentsKpi">0</div><div class="kpi-sub">pending completion</div></div><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>Completed</div><div class="kpi-value" id="completedJobsKpi">0</div><div class="kpi-sub">successful services</div></div><div class="kpi-card"><div class="kpi-title"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 20L22 20"/><path d="M4 16L10 4L16 16L22 6"/></svg>This Month</div><div class="kpi-value" id="monthRevenueKpi">ZMW 0</div><div class="kpi-sub">revenue trend ↑</div></div></div>
-  <div class="action-bar"><div class="search-wrapper"><input type="text" id="searchBar" placeholder="Search by customer, phone, or service..."></div><div class="filter-group"><div class="filter-chip" data-filter="all">All</div><div class="filter-chip" data-filter="pending">Pending</div><div class="filter-chip" data-filter="completed">Completed</div></div></div>
-  <div id="cardsGridContainer" class="cards-grid"></div>
-  <button class="fab-add" id="fabAddBtn" title="Add New Appointment"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg></button>
+
+  <!-- KPI CARDS -->
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-icon ki-p"><i class="ti ti-currency-dollar" aria-hidden="true"></i></div>
+      <div class="kpi-label">Total revenue</div>
+      <div class="kpi-value" id="totalCollectedKpi">ZMW 0</div>
+      <div class="kpi-sub"><i class="ti ti-check" aria-hidden="true"></i>Completed</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-b"><i class="ti ti-clock" aria-hidden="true"></i></div>
+      <div class="kpi-label">Active</div>
+      <div class="kpi-value" id="activeAppointmentsKpi">0</div>
+      <div class="kpi-sub"><i class="ti ti-loader" aria-hidden="true"></i>Pending</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-g"><i class="ti ti-circle-check" aria-hidden="true"></i></div>
+      <div class="kpi-label">Completed</div>
+      <div class="kpi-value" id="completedJobsKpi">0</div>
+      <div class="kpi-sub"><i class="ti ti-star" aria-hidden="true"></i>Services done</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-icon ki-a"><i class="ti ti-trending-up" aria-hidden="true"></i></div>
+      <div class="kpi-label">This month</div>
+      <div class="kpi-value" id="monthRevenueKpi">ZMW 0</div>
+      <div class="kpi-sub"><i class="ti ti-arrow-up-right" aria-hidden="true"></i>Revenue</div>
+    </div>
+  </div>
+
+  <!-- ACTION BAR -->
+  <div class="action-bar">
+    <div class="search-wrapper">
+      <i class="ti ti-search search-ic" aria-hidden="true"></i>
+      <input type="text" id="searchBar" placeholder="Search customer, phone, service…">
+    </div>
+    <div class="filter-group">
+      <div class="filter-chip active" data-filter="all"><i class="ti ti-list" aria-hidden="true"></i>All</div>
+      <div class="filter-chip" data-filter="pending"><i class="ti ti-clock" aria-hidden="true"></i>Pending</div>
+      <div class="filter-chip" data-filter="completed"><i class="ti ti-circle-check" aria-hidden="true"></i>Done</div>
+    </div>
+  </div>
+
+  <!-- CARDS -->
+  <div id="cardsGrid" class="cards-grid"></div>
+
+  <!-- FAB -->
+  <div class="fab-wrap">
+    <button class="fab" id="fabBtn" aria-label="Add new appointment">
+      <i class="ti ti-plus" aria-hidden="true"></i>
+    </button>
+  </div>
+
 </div>
+
 <script>
   let appointments = JSON.parse(localStorage.getItem("serviceflow_appointments")) || [];
-  let currentFilter = "all", expandedCardId = null, deferredPrompt;
-  const cardsContainer = document.getElementById("cardsGridContainer"), searchInput = document.getElementById("searchBar");
-  function formatDateTime(d) { if(!d) return "—"; return new Date(d).toLocaleString(undefined, { month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' }); }
-  function formatFullDate(d) { if(!d) return "Not scheduled"; return new Date(d).toLocaleString(undefined, { weekday:'short', year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' }); }
-  function isToday(d) { return d?.slice(0,10) === new Date().toISOString().slice(0,10); }
-  function isCurrentMonth(d) { let td=new Date(), ad=new Date(d); return ad.getMonth()===td.getMonth() && ad.getFullYear()===td.getFullYear(); }
-  function updateMetrics() {
-    let comp = appointments.filter(a=>a.completed), pend = appointments.filter(a=>!a.completed);
-    let total = comp.reduce((s,a)=>s+parseFloat(a.amount||0),0);
-    let monthRev = appointments.filter(a=>a.completed && isCurrentMonth(a.datetime)).reduce((s,a)=>s+parseFloat(a.amount||0),0);
-    document.getElementById("totalCollectedKpi").innerText = `ZMW ${total.toFixed(2)}`;
-    document.getElementById("activeAppointmentsKpi").innerText = pend.length;
-    document.getElementById("completedJobsKpi").innerText = comp.length;
-    document.getElementById("monthRevenueKpi").innerText = `ZMW ${monthRev.toFixed(2)}`;
-    document.getElementById("todayCount").innerText = appointments.filter(a=>isToday(a.datetime)).length;
-    document.getElementById("pendingCount").innerText = pend.length;
+  let currentFilter = "all", expandedId = null, deferredPrompt;
+
+  const grid = document.getElementById("cardsGrid");
+  const searchInput = document.getElementById("searchBar");
+
+  function fmtFull(d) {
+    if (!d) return "Not scheduled";
+    return new Date(d).toLocaleString(undefined, { weekday: 'short', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' });
   }
-  function escapeHtml(s){ if(!s) return ''; return s.replace(/[&<>]/g, m=> m==='&'?'&amp;': m==='<'?'&lt;':'&gt;'); }
-  function toggleExpand(id){ expandedCardId = expandedCardId===id ? null : id; renderCards(); }
-  function handleEdit(id){ window.location.href = `add.html?edit=${id}`; }
-  function handleDelete(id){ if(confirm("Delete this appointment?")){ appointments = appointments.filter(a=>a.id!=id); if(expandedCardId===id) expandedCardId=null; localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments)); renderCards(); } }
-  function handleToggle(id){ let idx = appointments.findIndex(a=>a.id==id); if(idx!==-1){ appointments[idx].completed = !appointments[idx].completed; localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments)); renderCards(); } }
+  function isToday(d) { return d?.slice(0, 10) === new Date().toISOString().slice(0, 10); }
+  function isThisMonth(d) {
+    let t = new Date(), a = new Date(d);
+    return a.getMonth() === t.getMonth() && a.getFullYear() === t.getFullYear();
+  }
+  function esc(s) {
+    if (!s) return '';
+    return s.replace(/[&<>]/g, m => m === '&' ? '&amp;' : m === '<' ? '&lt;' : '&gt;');
+  }
+
+  function updateMetrics() {
+    let comp = appointments.filter(a => a.completed);
+    let pend = appointments.filter(a => !a.completed);
+    let total = comp.reduce((s, a) => s + parseFloat(a.amount || 0), 0);
+    let mRev = appointments.filter(a => a.completed && isThisMonth(a.datetime)).reduce((s, a) => s + parseFloat(a.amount || 0), 0);
+    document.getElementById("totalCollectedKpi").textContent = "ZMW " + total.toFixed(2);
+    document.getElementById("activeAppointmentsKpi").textContent = pend.length;
+    document.getElementById("completedJobsKpi").textContent = comp.length;
+    document.getElementById("monthRevenueKpi").textContent = "ZMW " + mRev.toFixed(2);
+    document.getElementById("todayCount").textContent = appointments.filter(a => isToday(a.datetime)).length;
+    document.getElementById("pendingCount").textContent = pend.length;
+  }
+
+  function toggleExpand(id) { expandedId = expandedId === id ? null : id; renderCards(); }
+
+  function handleDelete(id) {
+    if (confirm("Delete this appointment?")) {
+      appointments = appointments.filter(a => a.id != id);
+      if (expandedId === id) expandedId = null;
+      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+      renderCards();
+    }
+  }
+
+  function handleToggle(id) {
+    let idx = appointments.findIndex(a => a.id == id);
+    if (idx !== -1) {
+      appointments[idx].completed = !appointments[idx].completed;
+      localStorage.setItem("serviceflow_appointments", JSON.stringify(appointments));
+      renderCards();
+    }
+  }
+
   function renderCards() {
-    let filtered = appointments.filter(a=>{ let s=searchInput.value.trim().toLowerCase(); return !s || a.name.toLowerCase().includes(s) || a.phone.includes(s) || a.service.toLowerCase().includes(s); });
-    if(currentFilter==="pending") filtered = filtered.filter(a=>!a.completed);
-    if(currentFilter==="completed") filtered = filtered.filter(a=>a.completed);
-    cardsContainer.innerHTML = "";
-    if(filtered.length===0){ cardsContainer.innerHTML = `<div class="empty-state"><h3>✨ No appointments found</h3><p>Click the + button to add your first appointment.</p></div>`; updateMetrics(); return; }
-    filtered.forEach(appt => {
-      let isExpanded = expandedCardId===appt.id, statusClass = appt.completed ? 'status-completed-card' : 'status-pending-card', statusText = appt.completed ? 'Completed' : 'Pending', amountValue = parseFloat(appt.amount).toFixed(2);
-      let card = document.createElement('div'); card.className = 'appointment-card'; if(appt.completed) card.style.background = 'rgba(240,253,244,0.88)';
-      let header = document.createElement('div'); header.className = 'card-header'; header.setAttribute('data-id', appt.id);
-      header.innerHTML = `<div class="customer-name-row"><div class="customer-name"><span class="expand-icon">▶</span> ${escapeHtml(appt.name)}</div><div class="status-badge-card ${statusClass}"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>${statusText}</div></div><div class="card-preview"><div class="preview-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>${escapeHtml(appt.phone)}</div><div class="preview-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>${escapeHtml(appt.service)}</div><div class="preview-item"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>ZMW ${amountValue}</div></div>`;
-      card.appendChild(header);
-      if(isExpanded){
-        let details = document.createElement('div'); details.className = 'card-details';
-        details.innerHTML = `<div class="details-grid-card"><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>CONTACT</div><div class="detail-value-card">${escapeHtml(appt.phone)}</div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>SERVICE</div><div class="detail-value-card"><strong>${escapeHtml(appt.service)}</strong></div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>DATE & TIME</div><div class="detail-value-card">${formatFullDate(appt.datetime)}</div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>AMOUNT</div><div class="detail-value-card amount-value">ZMW ${amountValue}</div></div><div class="detail-card-item"><div class="detail-label-card"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>STATUS</div><div class="detail-value-card"><span class="status-badge-card ${statusClass}">${statusText}</span></div></div></div><div class="action-buttons-card"><button class="card-action-btn card-edit" data-id="${appt.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 3l4 4L7 21H3v-4L17 3z"/><path d="M15 5l4 4"/></svg>Edit</button><button class="card-action-btn card-delete" data-id="${appt.id}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Delete</button><button class="card-action-btn card-complete" data-id="${appt.id}">${appt.completed ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h6"/><path d="M16 2h6v6"/><path d="M21 3L12 12"/></svg> Undo' : '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Complete'}</button></div>`;
-        card.appendChild(details);
+    let q = searchInput.value.trim().toLowerCase();
+    let list = appointments.filter(a =>
+      !q || a.name.toLowerCase().includes(q) || a.phone.includes(q) || a.service.toLowerCase().includes(q)
+    );
+    if (currentFilter === "pending") list = list.filter(a => !a.completed);
+    if (currentFilter === "completed") list = list.filter(a => a.completed);
+
+    grid.innerHTML = "";
+
+    if (!list.length) {
+      grid.innerHTML = `
+        <div class="empty-state">
+          <div class="empty-icon"><i class="ti ti-calendar-off" aria-hidden="true"></i></div>
+          <h3>No appointments found</h3>
+          <p>Tap the + button below to add your first appointment.</p>
+        </div>`;
+      updateMetrics();
+      return;
+    }
+
+    list.forEach(appt => {
+      let isExp = expandedId === appt.id;
+      let amt = parseFloat(appt.amount || 0).toFixed(2);
+
+      let card = document.createElement('div');
+      card.className = 'appt-card' + (appt.completed ? ' done' : '');
+
+      let hdr = document.createElement('div');
+      hdr.className = 'card-header';
+      hdr.dataset.id = appt.id;
+      hdr.innerHTML = `
+        <div class="name-row">
+          <div class="cust-name">
+            <i class="ti ti-chevron-right expand-i${isExp ? ' open' : ''}" aria-hidden="true"></i>
+            ${esc(appt.name)}
+          </div>
+          <div class="sbadge ${appt.completed ? 's-done' : 's-pend'}">
+            <i class="ti ti-${appt.completed ? 'circle-check' : 'clock'}" aria-hidden="true" style="font-size:11px"></i>
+            ${appt.completed ? 'Done' : 'Pending'}
+          </div>
+        </div>
+        <div class="card-preview">
+          <div class="prev-item"><i class="ti ti-phone" aria-hidden="true"></i>${esc(appt.phone)}</div>
+          <div class="prev-item"><i class="ti ti-tool" aria-hidden="true"></i>${esc(appt.service)}</div>
+          <div class="prev-item"><i class="ti ti-currency-dollar" aria-hidden="true"></i>ZMW ${amt}</div>
+        </div>`;
+      card.appendChild(hdr);
+
+      if (isExp) {
+        let det = document.createElement('div');
+        det.className = 'card-details';
+        det.innerHTML = `
+          <div class="details-grid">
+            <div class="d-item">
+              <div class="d-label"><i class="ti ti-phone" aria-hidden="true"></i>Contact</div>
+              <div class="d-val">${esc(appt.phone)}</div>
+            </div>
+            <div class="d-item">
+              <div class="d-label"><i class="ti ti-tool" aria-hidden="true"></i>Service</div>
+              <div class="d-val">${esc(appt.service)}</div>
+            </div>
+            <div class="d-item" style="grid-column:1/-1">
+              <div class="d-label"><i class="ti ti-calendar-event" aria-hidden="true"></i>Date & time</div>
+              <div class="d-val" style="font-size:.82rem">${fmtFull(appt.datetime)}</div>
+            </div>
+            <div class="d-item">
+              <div class="d-label"><i class="ti ti-currency-dollar" aria-hidden="true"></i>Amount</div>
+              <div class="d-val amt">ZMW ${amt}</div>
+            </div>
+            <div class="d-item">
+              <div class="d-label"><i class="ti ti-info-circle" aria-hidden="true"></i>Status</div>
+              <div class="d-val">
+                <span class="sbadge ${appt.completed ? 's-done' : 's-pend'}">
+                  <i class="ti ti-${appt.completed ? 'circle-check' : 'clock'}" aria-hidden="true" style="font-size:11px"></i>
+                  ${appt.completed ? 'Done' : 'Pending'}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div class="act-btns">
+            <button class="abtn ab-edit" data-id="${appt.id}">
+              <i class="ti ti-pencil" aria-hidden="true"></i>Edit
+            </button>
+            <button class="abtn ab-del" data-id="${appt.id}">
+              <i class="ti ti-trash" aria-hidden="true"></i>Delete
+            </button>
+            <button class="abtn ab-done" data-id="${appt.id}">
+              <i class="ti ti-${appt.completed ? 'arrow-back-up' : 'circle-check'}" aria-hidden="true"></i>
+              ${appt.completed ? 'Undo' : 'Mark done'}
+            </button>
+          </div>`;
+        card.appendChild(det);
       }
-      cardsContainer.appendChild(card);
+
+      grid.appendChild(card);
     });
-    document.querySelectorAll('.card-header').forEach(h=>h.addEventListener('click',(e)=>{ e.stopPropagation(); let id=parseInt(h.dataset.id); if(!isNaN(id)) toggleExpand(id); }));
-    document.querySelectorAll('.card-edit').forEach(b=>b.addEventListener('click',(e)=>{ e.stopPropagation(); handleEdit(b.dataset.id); }));
-    document.querySelectorAll('.card-delete').forEach(b=>b.addEventListener('click',(e)=>{ e.stopPropagation(); handleDelete(b.dataset.id); }));
-    document.querySelectorAll('.card-complete').forEach(b=>b.addEventListener('click',(e)=>{ e.stopPropagation(); handleToggle(b.dataset.id); }));
-    document.querySelectorAll('.expand-icon').forEach(icon=>icon.classList.remove('rotated'));
-    if(expandedCardId) document.querySelectorAll(`.card-header[data-id="${expandedCardId}"] .expand-icon`).forEach(i=>i.classList.add('rotated'));
+
+    grid.querySelectorAll('.card-header').forEach(h =>
+      h.addEventListener('click', e => { e.stopPropagation(); let id = parseInt(h.dataset.id); if (!isNaN(id)) toggleExpand(id); })
+    );
+    grid.querySelectorAll('.ab-edit').forEach(b =>
+      b.addEventListener('click', e => { e.stopPropagation(); window.location.href = `add.html?edit=${b.dataset.id}`; })
+    );
+    grid.querySelectorAll('.ab-del').forEach(b =>
+      b.addEventListener('click', e => { e.stopPropagation(); handleDelete(b.dataset.id); })
+    );
+    grid.querySelectorAll('.ab-done').forEach(b =>
+      b.addEventListener('click', e => { e.stopPropagation(); handleToggle(b.dataset.id); })
+    );
+
     updateMetrics();
   }
-  document.querySelectorAll(".filter-chip").forEach(chip=>{ chip.addEventListener("click",()=>{ document.querySelectorAll(".filter-chip").forEach(c=>c.classList.remove("active")); chip.classList.add("active"); currentFilter=chip.dataset.filter; expandedCardId=null; renderCards(); }); });
-  searchInput.addEventListener("input",()=>{ expandedCardId=null; renderCards(); });
-  document.getElementById("fabAddBtn").addEventListener("click",()=>window.location.href="add.html");
-  window.addEventListener('beforeinstallprompt',(e)=>{ e.preventDefault(); deferredPrompt=e; document.getElementById('installBtn').classList.add('show'); });
-  document.getElementById('installBtn').addEventListener('click',async()=>{ if(deferredPrompt){ deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt=null; document.getElementById('installBtn').classList.remove('show'); } });
-  window.addEventListener('storage',(e)=>{ if(e.key==='serviceflow_appointments'){ appointments=JSON.parse(e.newValue)||[]; renderCards(); } });
-  document.querySelector(".filter-chip[data-filter='all']").classList.add("active");
+
+  // FILTERS
+  document.querySelectorAll(".filter-chip").forEach(c => {
+    c.addEventListener("click", () => {
+      document.querySelectorAll(".filter-chip").forEach(x => x.classList.remove("active"));
+      c.classList.add("active");
+      currentFilter = c.dataset.filter;
+      expandedId = null;
+      renderCards();
+    });
+  });
+
+  // SEARCH
+  searchInput.addEventListener("input", () => { expandedId = null; renderCards(); });
+
+  // FAB
+  document.getElementById("fabBtn").addEventListener("click", () => window.location.href = "add.html");
+
+  // THEME TOGGLE
+  const themeToggle = document.getElementById("themeToggle");
+  const themeIcon = document.getElementById("themeIcon");
+  let dark = localStorage.getItem("sf_theme") === "dark";
+
+  function applyTheme() {
+    document.body.setAttribute("data-theme", dark ? "dark" : "light");
+    document.getElementById("app").setAttribute("data-theme", dark ? "dark" : "light");
+    themeIcon.className = dark ? "ti ti-sun" : "ti ti-moon";
+  }
+
+  themeToggle.addEventListener("click", () => {
+    dark = !dark;
+    localStorage.setItem("sf_theme", dark ? "dark" : "light");
+    applyTheme();
+  });
+
+  applyTheme();
+
+  // PWA INSTALL
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installBtn').classList.add('show');
+  });
+  document.getElementById('installBtn').addEventListener('click', async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      await deferredPrompt.userChoice;
+      deferredPrompt = null;
+      document.getElementById('installBtn').classList.remove('show');
+    }
+  });
+
+  // CROSS-TAB SYNC
+  window.addEventListener('storage', e => {
+    if (e.key === 'serviceflow_appointments') {
+      appointments = JSON.parse(e.newValue) || [];
+      renderCards();
+    }
+  });
+
   renderCards();
 </script>
 </body>
